@@ -47,7 +47,7 @@ local function FilgerUnitDebuff(unitID, inSpellID, spn, absID)
 	return nil
 end
 
---local Update
+local Update
 local function OnUpdate(self, elapsed)
 	local time = ( self.filter == "CD" or self.filter == "ICD" ) and (self.expirationTime + self.duration - GetTime()) or (self.expirationTime - GetTime())
 	if (self:GetParent().Mode == "BAR") then
@@ -63,6 +63,7 @@ local function OnUpdate(self, elapsed)
 		for index, value in ipairs(active[id]) do
 			if (self.spellName == value.data.spellName and self.filter == value.data.filter) then
 				tremove(active[id], index)
+				--print("#active["..id.."]"..(#active[id]))
 				break
 			end
 		end
@@ -192,6 +193,7 @@ function Update(self)
 				end
 			end
 			tinsert(bars[id], bar)
+			--print("#bars["..id.."]"..(#bars[id]))
 		end
 
 		-- Update position of first 'bar' if direction is HORIZONTAL
@@ -254,6 +256,7 @@ local function OnEvent(self, event, ...)
 		for i=1, #Filger_Spells[class][id], 1 do
 			local data, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, start, enabled, slotLink, spn
 			data = Filger_Spells[class][id][i]
+			--DEFAULT_CHAT_FRAME:AddMessage("FILGER: spellID:"..data.spellID.." filter:"..data.filter)
 			if (data.filter == "BUFF") then
 				spn = GetSpellInfo(data.spellID)
 				name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = FilgerUnitBuff(data.unitId, data.spellID, spn, data.absID)
@@ -271,6 +274,7 @@ local function OnEvent(self, event, ...)
 						name, _, _, _, _, _, _, _, _, icon = GetItemInfo(slotLink)
 						data.spellName = name
 						start, duration, enabled = GetInventoryItemCooldown("player", data.slotID)
+						--DEFAULT_CHAT_FRAME:AddMessage("FILGER: slotID:"..data.slotID.." filter:"..data.filter.." name:"..(name or "").." duration:"..(duration or 0).." enabled:"..(enabled or 0))
 					end
 				end
 				count = 0
@@ -318,6 +322,7 @@ local function OnEvent(self, event, ...)
 				for index, value in ipairs(active[id]) do
 					if (data.spellName == value.data.spellName and value.data.filter ~= "ICD" ) then
 						tremove(active[id], index)
+						--print("#active["..id.."]"..(#active[id]))
 					end
 				end
 			end
@@ -356,6 +361,7 @@ if (Filger_Spells and Filger_Spells["ALL"]) then
 			table.insert(Filger_Spells[class], Filger_Spells["ALL"][i])
 		else
 			-- merge spell-list but class-specific position, direction, ...
+			--DEFAULT_CHAT_FRAME:AddMessage("FILGER: MERGING SPELLS FROM "..spellListAll.Name)
 			for j = 1, #spellListAll, 1 do
 				table.insert( spellListClass, spellListAll[j] )
 			end
@@ -387,6 +393,7 @@ if (Filger_Spells and Filger_Spells[class]) then
 			end
 
 			if (not spn and not data[j].slotID) then -- Warning only for spell, not for trinket
+				--DEFAULT_CHAT_FRAME:AddMessage("FILGER: "..data.Name)
 				print("Filger: WARNING - BAD spell/slot ID -> ".. (data[j].spellID or data[j].slotID or "UNKNOWN") .."!")
 				table.insert(jdx, j)
 			end

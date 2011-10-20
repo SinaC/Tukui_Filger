@@ -387,9 +387,24 @@ ns.Filger_Spells = {
 			{ spellID = 51562, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Elemental Mastery
 			{ spellID = 16166, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
+			
+			-- Sated
+			{ spellID = 57724, size = 47, unitId = "player", caster = "player", filter = "DEBUFF" },
 		},
+		-- {
+			-- Name = "READY_FRAME",
+			-- Direction = "RIGHT",
+			-- Interval = 0,
+			-- Mode = "ICON",
+			-- setPoint = { "RIGHT", UIParent, "CENTER", 100, 180 },
+			
+			-- -- Riptide/Springflut
+			-- { spellID = 61295, size = 47, filter = "READY" },
+			-- -- Bloodlust/Kampfrausch
+			-- { spellID = 2825, size = 47, filter = "READY" },
+		-- },
 		{
-			Name = "CD/HEAL",
+			Name = "COOLDOWN",
 			Direction = "UP",
 			IconSide = "RIGHT",
 			Interval = 0,
@@ -398,6 +413,9 @@ ns.Filger_Spells = {
 
 			-- Nature Swiftness
 			{ spellID = 16188, size = 32, barWidth = 200, filter = "CD" },
+			-- Riptide/Springflut
+			{ spellID = 61295, size = 32, trigger = "BUFF", barWidth = 200, duration = 50, filter = "ICD" },
+			{ spellID = 61295, size = 32, barWidth = 200, filter = "CD" },
 		},
 --		{
 --			Name = "P_BUFF_ICON",
