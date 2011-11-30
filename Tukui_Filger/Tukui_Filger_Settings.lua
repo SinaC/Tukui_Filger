@@ -569,7 +569,7 @@ ns.Filger_Spells = {
 			IconSide = "RIGHT",
 			Interval = 0,
 			Mode = "BAR",
-			setPoint = { "RIGHT", UIParent, "CENTER", -435, 330 },
+			setPoint = { "RIGHT", UIParent, "CENTER",  -436, 332 },
 
 			-- Divine Favor
 			{ spellID = 31842, size = 32, barWidth = 200, filter = "CD" },
@@ -1360,6 +1360,33 @@ ns.Filger_Spells = {
 			{ spellID = 100460, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
 			-- Burning Wound (Ragnaros)
 			{ spellID = 101239, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
+
+--[[
+    -- Dragon Soul
+      -- Morchok
+      SpellName(103541),  -- Safe
+      SpellName(103536),  -- Warning
+      SpellName(103534),  -- Danger
+      SpellName(108570),  -- Black Blood of the Earth
+      -- Warlord Zon'ozz
+      SpellName(103434),  -- Disrupting Shadows
+      -- Yor'sahj the Unsleeping
+      SpellName(105171),  -- Deep Corruption
+      -- Hagara the Stormbinder
+      SpellName(105465),  -- Lighting Storm
+      SpellName(104451),  -- Ice Tomb
+      SpellName(109325),  -- Frostflake
+      SpellName(105289),  -- Shattered Ice
+      SpellName(105285),  -- Target
+      -- Ultraxion
+      SpellName(110079),  -- Fading Light
+      SpellName(109075),  -- Fading Light
+      -- Warmaster Blackhorn
+      -- Spine of Deathwing
+      SpellName(105479),  -- Searing Plasma
+      SpellName(105490),  -- Fiery Grip
+      -- Madness of Deathwing
+--]]
 		},
 		{
 			Name = "PVP_T_BUFF_ICON",
