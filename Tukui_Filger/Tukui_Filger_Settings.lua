@@ -413,9 +413,8 @@ ns.Filger_Spells = {
 
 			-- Nature Swiftness
 			{ spellID = 16188, size = 32, barWidth = 200, filter = "CD" },
-			-- Riptide/Springflut
-			{ spellID = 61295, size = 32, trigger = "BUFF", barWidth = 200, duration = 50, filter = "ICD" },
-			{ spellID = 61295, size = 32, barWidth = 200, filter = "CD" },
+			-- -- Riptide/Springflut
+			-- { spellID = 61295, size = 32, barWidth = 200, filter = "CD" },
 		},
 --		{
 --			Name = "P_BUFF_ICON",
