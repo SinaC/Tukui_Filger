@@ -152,33 +152,62 @@ ns.Filger_Spells = {
 		},
 		{
 			Name = "COOLDOWN",
-			Direction = "UP",
-			IconSide = "RIGHT",
+			Direction = "HORIZONTAL",
 			Interval = 0,
-			Mode = "BAR",
-			setPoint = { "RIGHT", UIParent, "CENTER", -294, 315 },
+			Mode = "ICON",
+			Opacity = 0.5,
+			setPoint = { "LEFT", UIParent, "CENTER", 0, -40 },
 
 			-- Swiftmend/Rasche Heilung
 			--{ spellID = 18562, size = 32, barWidth = 200, filter = "CD" },
 			-- Wild Growth/Wildwuchs
 			--{ spellID = 48438, size = 32, barWidth = 200, filter = "CD" },
 			-- Nature Swiftness
-			{ spellID = 17116, size = 32, barWidth = 200, filter = "CD" },
+			{ spellID = 17116, size = 47, filter = "CD" },
 			-- Innervate
-			{ spellID = 29166, size = 32, barWidth = 200, filter = "CD" },
+			{ spellID = 29166, size = 47, filter = "CD" },
 			-- Barkskin
-			{ spellID = 22812, size = 32, barWidth = 200, filter = "CD" },
+			{ spellID = 22812, size = 47, filter = "CD" },
 			-- Tree of Life
-			{ spellID = 33891, size = 32, barWidth = 200, filter = "CD" },
+			{ spellID = 33891, size = 47, filter = "CD" },
 			-- Tranquility
-			{ spellID = 740, size = 32, barWidth = 200, filter = "CD" },
+			{ spellID = 740, size = 47, filter = "CD" },
 			-- Berserk
-			{ spellID = 50334, size = 32, barWidth = 200, filter = "CD" },
+			{ spellID = 50334, size = 47, filter = "CD" },
 			-- Tiger Fury
-			{ spellID = 5217, size = 32, barWidth = 200, filter = "CD" },
+			{ spellID = 5217, size = 47, filter = "CD" },
 			-- Survival Instincts/Überlebensinstinkte
-			{ spellID = 61336, size = 32, barWidth = 200, filter = "CD" },
+			{ spellID = 61336, size = 47, filter = "CD" },
 		},
+		-- {
+			-- Name = "COOLDOWN",
+			-- Direction = "UP",
+			-- IconSide = "RIGHT",
+			-- Interval = 0,
+			-- Mode = "BAR",
+			-- setPoint = { "RIGHT", UIParent, "CENTER", -294, 315 },
+
+			-- -- Swiftmend/Rasche Heilung
+			-- --{ spellID = 18562, size = 32, barWidth = 200, filter = "CD" },
+			-- -- Wild Growth/Wildwuchs
+			-- --{ spellID = 48438, size = 32, barWidth = 200, filter = "CD" },
+			-- -- Nature Swiftness
+			-- { spellID = 17116, size = 32, barWidth = 200, filter = "CD" },
+			-- -- Innervate
+			-- { spellID = 29166, size = 32, barWidth = 200, filter = "CD" },
+			-- -- Barkskin
+			-- { spellID = 22812, size = 32, barWidth = 200, filter = "CD" },
+			-- -- Tree of Life
+			-- { spellID = 33891, size = 32, barWidth = 200, filter = "CD" },
+			-- -- Tranquility
+			-- { spellID = 740, size = 32, barWidth = 200, filter = "CD" },
+			-- -- Berserk
+			-- { spellID = 50334, size = 32, barWidth = 200, filter = "CD" },
+			-- -- Tiger Fury
+			-- { spellID = 5217, size = 32, barWidth = 200, filter = "CD" },
+			-- -- Survival Instincts/Überlebensinstinkte
+			-- { spellID = 61336, size = 32, barWidth = 200, filter = "CD" },
+		-- },
 	},
 --
 --	["HUNTER"] = {
@@ -413,8 +442,9 @@ ns.Filger_Spells = {
 
 			-- Nature Swiftness
 			{ spellID = 16188, size = 32, barWidth = 200, filter = "CD" },
-			-- -- Riptide/Springflut
-			-- { spellID = 61295, size = 32, barWidth = 200, filter = "CD" },
+			-- Riptide/Springflut
+			--{ spellID = 61295, size = 32, trigger = "BUFF", barWidth = 200, duration = 50, filter = "ICD" },
+			--{ spellID = 61295, size = 32, barWidth = 200, filter = "CD" },
 		},
 --		{
 --			Name = "P_BUFF_ICON",
@@ -986,7 +1016,7 @@ ns.Filger_Spells = {
 			Interval = 0,
 			Mode = "ICON",
 			Opacity = 0.5,
-			setPoint = { "LEFT", UIParent, "CENTER", 0, -60 },
+			setPoint = { "LEFT", UIParent, "CENTER", 0, -90 },
 		-- Trinkets
 			-- 1st trinket
 			{ slotID = 13, size = 47, filter = "CD" },
@@ -1360,6 +1390,53 @@ ns.Filger_Spells = {
 			-- Burning Wound (Ragnaros)
 			{ spellID = 101239, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
 
+			-- Dragon Soul
+			--Morchok
+			-- Safe
+			{ spellID = 103541, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
+			-- Warning
+			{ spellID = 103536, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
+			-- Danger
+			{ spellID = 103534, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
+			-- Black Blood of the Earth
+			{ spellID = 108570, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
+			-- Crush Armor
+			{ spellID = 33661, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
+			--Warlord Zon'ozz
+			-- Disrupting Shadows
+			{ spellID = 103434, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
+			--Yor'sahj the Unsleeping
+			-- Deep Corruption
+			{ spellID = 103628, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
+			--Hagara the Stormbinder
+			-- Frostflake
+			{ spellID = 109325, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
+			-- Target
+			{ spellID = 105285, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
+			-- Shattered Ice
+			{ spellID = 105289, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
+			-- Ice Tomb
+			{ spellID = 104451, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
+			-- Lightning Storm
+			{ spellID = 105465, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
+			--Ultraxion
+			-- Heroic Will
+			{ spellID = 106108, size = 72, unitId = "player", caster = "all", filter = "BUFF" },
+			-- Looming Darkness
+			{ spellID = 106498, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
+			-- Twilight Burst
+			{ spellID = 106415, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
+			-- Fading Light
+			{ spellID = 109075, size = 72, unitId = "player", caster = "all", filter = "BUFF" },
+		--Warmaster Blackhorn
+			-- Twilight Barrage
+			{ spellID = 109204, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
+		--Spine of Deathwing
+			-- Searing Plasma
+			{ spellID = 105479, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
+			-- Fiery Grip
+			{ spellID = 105490, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
+		--Madness of Deathwing
 --[[
     -- Dragon Soul
       -- Morchok
