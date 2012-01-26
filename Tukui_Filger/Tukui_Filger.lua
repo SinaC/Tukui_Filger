@@ -283,6 +283,7 @@ local function OnEvent(self, event, ...)
 				if ( data.trigger == "BUFF" ) then
 					spn = GetSpellInfo(data.spellID)
 					name, _, icon = FilgerUnitBuff("player", data.spellID, spn, data.absID)
+print("ICD:"..tostring(spn).."  "..tostring(name).."  "..tostring(icon))
 				elseif ( data.trigger == "DEBUFF" ) then
 					spn = GetSpellInfo(data.spellID)
 					name, _, icon = UnitDebuff("player", data.spellID, spn, data.absID)
@@ -296,7 +297,7 @@ local function OnEvent(self, event, ...)
 				duration = data.duration
 				caster = "all"
 				count = 0
-				if ( spn ) then
+				if ( name ) then
 					enabled = 1
 				end
 			end
@@ -429,7 +430,7 @@ if (Filger_Spells and Filger_Spells[class]) then
 
 		if (f_s.configmode) then
 			local spellIcon
-			for j = 1, #Filger_Spells[class][i], 1 do
+			for j = 1, math.min(5,#Filger_Spells[class][i]), 1 do
 				data = Filger_Spells[class][i][j]
 				if (not active[i]) then
 					active[i] = {}
