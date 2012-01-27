@@ -15,7 +15,7 @@ ns.Filger_Settings = {
 			-- Wild Growth/Wildwuchs
 			{ spellID = 48438, size = 32, filter = "CD" },
 		},
-		
+
 	ICD-Example
 	-- Power Torrent
 	{ spellID = 74241, trigger = "BUFF", size = 47, duration = 45, slotID = 16, filter = "ICD" }, -- if slotID not specified, spellID is used as icon
@@ -26,10 +26,11 @@ ns.Filger_Spells = {
 		{
 			Name = "COOLDOWN",
 			Direction = "HORIZONTAL",
-			Interval = 0,
+			Interval = 1,
 			Mode = "ICON",
 			Opacity = 0.5,
 			Merge = true,
+			Size = 37,
 			--setPoint = { "LEFT", UIParent, "CENTER", 0, -180 },
 			setPoint = { "LEFT", UIParent, "CENTER", 0, -40 },
 
@@ -50,13 +51,13 @@ ns.Filger_Spells = {
 			-- Survival Instincts/Überlebensinstinkte
 			{ spellID = 61336, size = 47, filter = "CD" },
 
-			-- -- Nature's Grace
-			-- { spellID = 16886, size = 47, filter = "ICD", trigger = "BUFF", duration = 60 },
+			-- Nature's Grace
+			{ spellID = 16886, size = 47, filter = "ICD", trigger = "BUFF", duration = 60 },
 		},
 		{
 			Name = "P_PROC_ICON",
 			Direction = "HORIZONTAL",
-			Interval = 0,
+			Interval = 1,
 			Mode = "ICON",
 			Opacity = 0.5,
 			Merge = true,
@@ -449,7 +450,7 @@ ns.Filger_Spells = {
 			-- setPoint = { "RIGHT", UIParent, "CENTER", 23, 180 },
 			Name = "P_PROC_ICON",
 			Direction = "HORIZONTAL",
-			Interval = 0,
+			Interval = 1,
 			Mode = "ICON",
 			Opacity = 0.5,
 			Merge = true,
@@ -466,7 +467,7 @@ ns.Filger_Spells = {
 			{ spellID = 51562, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Elemental Mastery
 			{ spellID = 16166, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
-			
+
 			-- -- Sated
 			-- { spellID = 57724, size = 47, unitId = "player", caster = "player", filter = "DEBUFF" },
 		},
@@ -476,7 +477,7 @@ ns.Filger_Spells = {
 			-- Interval = 0,
 			-- Mode = "ICON",
 			-- setPoint = { "RIGHT", UIParent, "CENTER", 100, 180 },
-			
+
 			-- -- Riptide/Springflut
 			-- { spellID = 61295, size = 47, filter = "READY" },
 			-- -- Bloodlust/Kampfrausch
@@ -491,7 +492,7 @@ ns.Filger_Spells = {
 			-- setPoint = { "RIGHT", UIParent, "CENTER", -294, 200 },
 			Name = "COOLDOWN",
 			Direction = "HORIZONTAL",
-			Interval = 0,
+			Interval = 1,
 			Mode = "ICON",
 			Opacity = 0.5,
 			setPoint = { "LEFT", UIParent, "CENTER", 0, -40 },
@@ -652,7 +653,7 @@ ns.Filger_Spells = {
 		{
 			Name = "COOLDOWN",
 			Direction = "HORIZONTAL",
-			Interval = 0,
+			Interval = 1,
 			Mode = "ICON",
 			Opacity = 0.5,
 			setPoint = { "LEFT", UIParent, "CENTER", 0, -40 },
@@ -930,48 +931,66 @@ ns.Filger_Spells = {
 	},
 	["ROGUE"] = {
 		{
-			Name = "COOLDOWN",
+			Name = "SHORT_COOLDOWN",
 			Direction = "HORIZONTAL",
-			Interval = 0,
+			Interval = 1,
 			Mode = "ICON",
 			Opacity = 0.5,
 			Merge = true,
 			setPoint = { "LEFT", UIParent, "CENTER", 0, -40 },
 
-			-- Sprint
-			{ spellID = 2983, size = 37, filter = "CD" },
-			-- Cloak of Shadows
-			{ spellID = 31224, size = 37, filter = "CD" },
-			-- Tricks of the Trade
-			{ spellID = 57934, size = 37, filter = "CD" },
+			-- Kick
+			{ spellID = 1766, size = 37, filter = "CD" },
 			-- Kidney Shot
 			{ spellID = 408, size = 37, filter = "CD" },
-			-- Premeditation
-			{ spellID = 14183, size = 37, filter = "CD" },
+			-- Stealth
+			{ spellID = 1784, size = 37, filter = "CD" },
 			-- Shadowstep
 			{ spellID = 36554, size = 37, filter = "CD" },
-			-- ShadowStep
-			{ spellID = 36554, size = 37, filter = "CD" },
+		},
+		{
+			Name = "COOLDOWN",
+			Direction = "UP",
+			Interval = 1,
+			Mode = "ICON",
+			Opacity = 1.0,
+			Merge = true,
+			Size = 37,
+			setPoint = { "LEFT", UIParent, "CENTER", 198, -88 },
+
+			-- Premeditation
+			{ spellID = 14183, size = 37, filter = "CD" },
 			-- Shadow Dance
 			{ spellID = 51713, size = 37, filter = "CD" },
 			-- Vendetta
 			{ spellID = 14177, size = 37, filter = "CD" },
 			-- Cold Blood
 			{ spellID = 51713, size = 37, filter = "CD" },
-			-- Vanish
-			{ spellID = 1856, size = 37, filter = "CD" },
 			-- Adrenaline Rush
 			{ spellID = 13750, size = 37, filter = "CD" },
 			-- Killing Spree
 			{ spellID = 51690, size = 37, filter = "CD" },
+			-- Vanish
+			{ spellID = 1856, size = 37, filter = "CD" },
+			-- Cloak of Shadows
+			{ spellID = 31224, size = 37, filter = "CD" },
+			-- Tricks of the Trade
+			{ spellID = 57934, size = 37, filter = "CD" },
+			-- Redirect
+			{ spellID = 73981, size = 37, filter = "CD" },
+			-- Sprint
+			{ spellID = 2983, size = 37, filter = "CD" },
 		},
 		{
 			Name = "P_BUFF_ICON",
 			Direction = "LEFT",
-			Interval = 4,
+			Interval = 1,
+			Size = 37,
 			Mode = "ICON",
-			setPoint = { "RIGHT", UIParent, "CENTER", -37, -88 },
+			setPoint = { "RIGHT", UIParent, "CENTER", -40, -88 },
 
+			-- T13-2P Bonus
+			{ spellID = 105849, size = 37, unitId = "player", caster = "all", filter = "BUFF" },
 			-- Sprint
 			{ spellID = 2983, size = 37, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Cloak of Shadows
@@ -1008,13 +1027,16 @@ ns.Filger_Spells = {
 			{ spellID = 109959, size = 37, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Shadows of the Destroyer -- Legendary buff
 			{ spellID = 109941, size = 37, unitId = "player", caster = "player", filter = "BUFF" },
+			-- Blade Furry
+			{ spellID = 13877, size = 37, unitId = "player", caster = "player", filter = "BUFF" },
 		},
 		{
 			Name = "T_DEBUFF_ICON",
 			Direction = "RIGHT",
-			Interval = 4,
+			Interval = 1,
 			Mode = "ICON",
-			setPoint = { "LEFT", UIParent, "CENTER", 37, -88 },
+			Size = 37,
+			setPoint = { "LEFT", UIParent, "CENTER", 40, -88 },
 
 			-- Cheap shot
 			{ spellID = 1833, size = 37, unitId = "target", caster = "all", filter = "DEBUFF" },
@@ -1054,7 +1076,7 @@ ns.Filger_Spells = {
 		{
 			Name = "F/DEBUFF_BAR",
 			Direction = "UP",
-			Interval = 4,
+			Interval = 1,
 			Mode = "ICON",
 			setPoint = { "LEFT", UIParent, "CENTER", 198, 100 },
 
@@ -1068,7 +1090,7 @@ ns.Filger_Spells = {
 		{
 			Name = "P_PROC_ICON",
 			Direction = "HORIZONTAL",
-			Interval = 0,
+			Interval = 1,
 			Mode = "ICON",
 			Opacity = 0.5,
 			Merge = true,
@@ -1132,7 +1154,7 @@ ns.Filger_Spells = {
 		{
 			Name = "P_PROC_ICON",
 			Direction = "LEFT",
-			Interval = 0,
+			Interval = 1,
 			Mode = "ICON",
 			Opacity = 1.0,
 			setPoint = { "RIGHT", UIParent, "CENTER", 23, 180 },
@@ -1168,7 +1190,7 @@ ns.Filger_Spells = {
 			{ spellID = 91139, size = 52, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Witching Hour
 			{ spellID = 90887, size = 52, unitId = "player", caster = "player", filter = "BUFF" },
-		
+
 			-- 359/372/379 4.0
 			-- Pattern of Light (Mandala of Stirring Patterns)
 			{ spellID = 91192, size = 52, unitId = "player", caster = "all", filter = "BUFF" }, 
@@ -1273,33 +1295,33 @@ ns.Filger_Spells = {
 			-- Beast Fury - weapon agi DW
 			{ spellID = 109863, size = 52, unitId = "player", caster = "player", filter = "BUFF" },
 		},
-		
+
 		{
 			Name = "TRINKET_CD_ICON",
 			Direction = "HORIZONTAL",
-			Interval = 0,
+			Interval = 1,
 			Mode = "ICON",
 			Opacity = 0.5,
 			--setPoint = { "LEFT", UIParent, "CENTER", 0, -230 },
-			setPoint = { "LEFT", UIParent, "CENTER", 0, -90 },
+			setPoint = { "LEFT", UIParent, "CENTER", 0, -80 },
 		-- Trinkets
 			-- 1st trinket
-			{ slotID = 13, size = 47, filter = "CD" },
+			{ slotID = 13, size = 37, filter = "CD" },
 			-- 2nd trinket
-			{ slotID = 14, size = 47, filter = "CD" },
+			{ slotID = 14, size = 37, filter = "CD" },
 		},
-		
-		-- {
-			-- Name = "COOLDOWN",
-			-- Direction = "HORIZONTAL",
-			-- Interval = 0,
-			-- Mode = "ICON",
-			-- Opacity = 0.5,
-			-- setPoint = { "LEFT", UIParent, "CENTER", 0, -40 },
-			-- -- Power Torrent
-			-- { spellID = 74241, trigger = "BUFF", size = 47, duration = 45, slotID = 16, filter = "ICD" }, -- if slotID not specified, spellID is used as icon
-		-- },
-		
+
+		{
+			Name = "COOLDOWN",
+			Direction = "HORIZONTAL",
+			Interval = 1,
+			Mode = "ICON",
+			Opacity = 0.5,
+			setPoint = { "LEFT", UIParent, "CENTER", 0, 0 },
+			-- Power Torrent
+			{ spellID = 74241, trigger = "BUFF", size = 47, duration = 45--[[, slotID = 16--]], filter = "ICD" }, -- if slotID not specified, spellID is used as icon
+		},
+
 		{
 			--Name = "SPECIAL_P_BUFF_ICON",
 			Name = "P_BUFF_ICON",
@@ -1307,7 +1329,7 @@ ns.Filger_Spells = {
 			Interval = 4,
 			Mode = "ICON",
 			setPoint = { "RIGHT", UIParent, "CENTER", -148, -233 },
-						
+
 			-- Firelands
 			-- Molten Feather (Alysrazor)
 			{ spellID = 97128, size = 72, unitId = "player", caster = "all", filter = "BUFF" },
@@ -1351,10 +1373,10 @@ ns.Filger_Spells = {
 		},
 		{
 			Name = "PVE/PVP_P_DEBUFF_ICON",
-			Direction = "LEFT",
+			Direction = "UP",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "RIGHT", UIParent, "CENTER", -148, -80 },
+			setPoint = { "RIGHT", UIParent, "CENTER", -240, -80 },
 
 			-- Death Knight
 			-- Gnaw (Ghoul)
@@ -1639,7 +1661,7 @@ ns.Filger_Spells = {
 			{ spellID = 87873, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
 			-- Acid Rain/Säureregen (Al'Akir)
 			{ spellID = 93279, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
-			
+
 			-- Firelands
 			-- Magma Rupture (Shannox)
 			{ spellID = 99840, size = 72, unitId = "player", caster = "all", filter = "DEBUFF" },
@@ -1720,10 +1742,10 @@ ns.Filger_Spells = {
 		},
 		{
 			Name = "PVP_T_BUFF_ICON",
-			Direction = "RIGHT",
+			Direction = "UP",
 			Interval = 4,
 			Mode = "ICON",
-			setPoint = { "LEFT", UIParent, "CENTER", 148, -80 },
+			setPoint = { "LEFT", UIParent, "CENTER", 240, -80 },
 
 			-- Aspect of the Pack
 			{ spellID = 13159, size = 72, unitId = "player", caster = "player", filter = "BUFF" },
