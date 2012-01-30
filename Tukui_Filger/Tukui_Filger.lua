@@ -377,36 +377,41 @@ if Filger_Spells and Filger_Spells[class] then
 			Filger_Spells[index] = nil
 		end
 	end
-	-- remove invalid spell
+	-- remove invalid/disabled spell
 	local idx = {}
 	for i = 1, #Filger_Spells[class], 1 do
 		local jdx = {}
 		local data = Filger_Spells[class][i]
 
-		for j = 1, #data, 1 do
-			local spn
-			if data[j].spellID then
-				spn = GetSpellInfo(data[j].spellID)
-			else
-				local slotLink = GetInventoryItemLink("player", data[j].slotID);
-				if slotLink then
-					spn = GetItemInfo(slotLink)
+		if data.Enabled == false then
+			print("Filger: Disabled section -> "..data.Name)
+			table.insert(idx, i)
+		else
+			for j = 1, #data, 1 do
+				local spn
+				if data[j].spellID then
+					spn = GetSpellInfo(data[j].spellID)
+				else
+					local slotLink = GetInventoryItemLink("player", data[j].slotID);
+					if slotLink then
+						spn = GetItemInfo(slotLink)
+					end
+				end
+
+				if not spn and not data[j].slotID then -- Warning only for spell, not for trinket
+					--DEFAULT_CHAT_FRAME:AddMessage("FILGER: "..data.Name)
+					print("Filger: WARNING - BAD spell/slot ID -> ".. (data[j].spellID or data[j].slotID or "UNKNOWN") .."!")
+					table.insert(jdx, j)
 				end
 			end
-
-			if not spn and not data[j].slotID then -- Warning only for spell, not for trinket
-				--DEFAULT_CHAT_FRAME:AddMessage("FILGER: "..data.Name)
-				print("Filger: WARNING - BAD spell/slot ID -> ".. (data[j].spellID or data[j].slotID or "UNKNOWN") .."!")
-				table.insert(jdx, j)
+			for _, v in ipairs(jdx) do
+				table.remove(data, v)
 			end
-		end
-		for _, v in ipairs(jdx) do
-			table.remove(data, v)
-		end
 
-		if #data == 0 then
-			print("Filger: WARNING - EMPTY section -> "..data.Name.."!")
-			table.insert(idx, i)
+			if #data == 0 then
+				print("Filger: WARNING - EMPTY section -> "..data.Name.."!")
+				table.insert(idx, i)
+			end
 		end
 	end
 	for _, v in ipairs(idx) do

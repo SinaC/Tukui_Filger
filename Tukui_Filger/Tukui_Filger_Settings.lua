@@ -1094,6 +1094,7 @@ ns.Filger_Spells = {
 			Mode = "ICON",
 			Opacity = 0.5,
 			Merge = true,
+			Enabled = false,
 			setPoint = { "LEFT", UIParent, "CENTER", 0, 210 },
 
 			-- Fury of the Destroyer -- Legendary buff
