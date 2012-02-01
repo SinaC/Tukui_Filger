@@ -73,6 +73,8 @@ ns.Filger_Spells = {
 			{ spellID = 16870, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
 			-- -- Berserk lacerate/mangle proc
 			-- { spellID = 93622, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
+			-- Harmony (Healer Mastery Buff)
+			{ spellID = 100977, size = 60, unitId = "player", filter = "IBUFF", spec = 3, incombat = true },
 		},
 		--[[
 		{
@@ -129,7 +131,6 @@ ns.Filger_Spells = {
 			Interval = 4,
 			Opacity = 0.8,
 			Mode = "ICON",
-			Merge = true,
 			setPoint = { "RIGHT", UIParent, "CENTER", -37, -88 },
 
 			-- Pulverize
@@ -213,15 +214,15 @@ ns.Filger_Spells = {
 			Direction = "UP",
 			IconSide = "LEFT",
 			Interval = 4,
-			Mode = "BAR",
+			Mode = "ICON",
 			setPoint = { "LEFT", UIParent, "CENTER", 148, 100 },
 
 			-- Hibernate/Winterschlaf
-			{ spellID = 2637, size = 32, barWidth = 200, unitId = "focus", caster = "all", filter = "DEBUFF" },
+			{ spellID = 2637, size = 32, unitId = "focus", caster = "all", filter = "DEBUFF" },
 			-- Entangling Roots/Wucherwurzeln
-			{ spellID = 339, size = 32, barWidth = 200, unitId = "focus", caster = "all", filter = "DEBUFF" },
+			{ spellID = 339, size = 32, unitId = "focus", caster = "all", filter = "DEBUFF" },
 			-- Cyclone/Wirbelsturm
-			{ spellID = 33786, size = 32, barWidth = 200, unitId = "focus", caster = "all", filter = "DEBUFF" },
+			{ spellID = 33786, size = 32, unitId = "focus", caster = "all", filter = "DEBUFF" },
 		},
 		-- {
 			-- Name = "COOLDOWN",
@@ -599,10 +600,11 @@ ns.Filger_Spells = {
 --		},
 		{
 			Name = "P_PROC_ICON",
-			Direction = "LEFT",
+			Direction = "HORIZONTAL",
 			Interval = 4,
 			Opacity = 0.5,
 			Mode = "ICON",
+			Merge = true,
 			setPoint = { "RIGHT", UIParent, "CENTER", 23, 180 },
 
 			-- Divine Favor
@@ -655,6 +657,7 @@ ns.Filger_Spells = {
 			Direction = "HORIZONTAL",
 			Interval = 1,
 			Mode = "ICON",
+			Merge = true,
 			Opacity = 0.5,
 			setPoint = { "LEFT", UIParent, "CENTER", 0, -40 },
 
@@ -1024,10 +1027,10 @@ ns.Filger_Spells = {
 			-- Suffering -- Legendary buff
 			{ spellID = 109959, size = 37, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Nightmare -- Legendary buff
-			{ spellID = 109959, size = 37, unitId = "player", caster = "player", filter = "BUFF" },
+			{ spellID = 109955, size = 37, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Shadows of the Destroyer -- Legendary buff
 			{ spellID = 109941, size = 37, unitId = "player", caster = "player", filter = "BUFF" },
-			-- Blade Furry
+			-- Blade Fury
 			{ spellID = 13877, size = 37, unitId = "player", caster = "player", filter = "BUFF" },
 		},
 		{
@@ -1324,8 +1327,8 @@ ns.Filger_Spells = {
 		},
 
 		{
-			--Name = "SPECIAL_P_BUFF_ICON",
-			Name = "P_BUFF_ICON",
+			Name = "SPECIAL_P_BUFF_ICON",
+			--Name = "P_BUFF_ICON",
 			Direction = "LEFT",
 			Interval = 4,
 			Mode = "ICON",

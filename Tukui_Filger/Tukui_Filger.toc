@@ -4,7 +4,7 @@
 ## Author: Nils Ruesch, Affli
 ## Editor: FourOne, SinaC
 ## Credits: Nils Ruesch, Shestak, Affli, Garagar, hidekki, Ildyria
-## Version: 3.6
+## Version: 4.0
 ## RequiredDeps: Tukui
 
 Tukui_Filger_Settings.lua

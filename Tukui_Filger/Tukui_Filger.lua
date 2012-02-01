@@ -6,341 +6,298 @@
 
 ]]
 
--- TODO: 
--- 1) Is there a way to have the icon show when a spell is ready?
--- 2) find memory leak (should be in bars list management)
+-- TODO:
+-- 1) Is there a way to have the icon show when a spell is ready? YES but GCD causes problem: icon is flickering (check ACD in iFilger)
 
 local T, C, L = unpack(Tukui) -- Import: T - functions, constants, variables; C - config; L - locales
 
 local _, ns = ...
-local f_s = ns.Filger_Settings;
-local Filger_Spells = ns.Filger_Spells;
+local Filger_Spells = ns.Filger_Spells
+local Filger = {}
 
-local class = select(2, UnitClass("player"))
-local classcolor = RAID_CLASS_COLORS[class]
-local active, bars = {}, {};
-local MyUnits = {
-    player = true,
-    vehicle = true,
-    pet = true,
-}
-
-local function FilgerUnitBuff(unitID, inSpellID, spn, absID)
-	for i = 1, 40, 1 do
-		local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID = UnitBuff(unitID, i)
-		if not name then break end
-		if inSpellID == spellID or (name == spn and not absID) then
-			return name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID
-		end
-	end
-	return nil
-end
-
-local function FilgerUnitDebuff(unitID, inSpellID, spn, absID)
-	for i = 1, 40, 1 do
-		local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID = UnitDebuff(unitID, i)
-		if not name then break end
-		if inSpellID == spellID or (name == spn and not absID) then
-			return name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID
-		end
-	end
-	return nil
-end
-
-local Update
-local function OnUpdate(self, elapsed)
-	local time = (self.filter == "CD" or self.filter == "ICD") and (self.expirationTime + self.duration - GetTime()) or (self.expirationTime - GetTime())
-	if self:GetParent().Mode == "BAR" then
-		self.statusbar:SetValue(time)
-		if time <= 60 then
-			self.time:SetFormattedText("%.1f", time)
-		else
-			self.time:SetFormattedText("%d:%.2d", time/60, time%60)
-		end
-	end
-	if time < 0 and (self.filter == "CD" or self.filter == "ICD") then
-		local id = self:GetParent().Id
-		for index, value in ipairs(active[id]) do
-			if self.spellName == value.data.spellName and self.filter == value.data.filter then
-				tremove(active[id], index)
-				--print("#active["..id.."]"..(#active[id]))
-				break
+function Filger:UnitBuff(unitID, inSpellID, spn, absID)
+--print("UnitBuff:"..tostring(unitID).."  "..tostring(inSpellID).."  "..tostring(spn).."  "..tostring(absID))
+	if absID then
+		for i = 1, 40, 1 do
+			local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID = UnitBuff(unitID, i)
+			if not name then break end
+			if inSpellID == spellID then
+				return name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID
 			end
 		end
+	else
+		return UnitBuff(unitID, spn)
+	end
+	return nil
+end
+
+function Filger:UnitDebuff(unitID, inSpellID, spn, absID)
+--print("UnitDebuff:"..tostring(unitID).."  "..tostring(inSpellID).."  "..tostring(spn).."  "..tostring(absID))
+	if absID then
+		for i = 1, 40, 1 do
+			local name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID = UnitDebuff(unitID, i)
+			if not name then break end
+			if inSpellID == spellID then
+				return name, rank, icon, count, debuffType, duration, expirationTime, unitCaster, isStealable, shouldConsolidate, spellID
+			end
+		end
+	else
+		return UnitDebuff(unitID, spn)
+	end
+	return nil
+end
+
+function Filger:UpdateCD(elapsed)
+	local time = self.value.start + self.value.duration - GetTime()
+	if time < 0 then
+		local frame = self:GetParent()
+--local toRemove = frame.actives[self.activeIndex]
+--print("REMOVE["..tostring(self:GetParent().Id).."]:"..tostring(self.activeIndex).."->"..tostring(toRemove.data.spellID).."  "..tostring(toRemove.name).."  "..tostring(toRemove.data.filter))
+		frame.actives[self.activeIndex] = nil
 		self:SetScript("OnUpdate", nil)
-		Update(self:GetParent())
+		Filger.DisplayActives(frame)
 	end
 end
 
-function Update(self)
+function Filger:DisplayActives()
+	if not self.actives then return end
+	if not self.auras then self.auras = {} end
 	local id = self.Id
-	if not bars[id] then
-		bars[id] = {}
-	end
-	for index, value in ipairs(bars[id]) do
-		value:Hide()
-	end
-	local bar
-	for index, value in ipairs(active[id]) do
-		bar = bars[id][index]
-		if not bar then
-			bar = CreateFrame("Frame", "FilgerAnchor"..id.."Frame"..index, self)
-			bar:Width(value.data.size)
-			bar:Height(value.data.size)
-			bar:SetScale(1)
-			bar:SetTemplate("Default")
-			bar:SetAlpha(value.data.Opacity or 1.0)
-
-			-- HORIZONTAL is created as RIGHT, position will be updated later
+	local index
+--print("DisplayActives:"..tostring(#self.auras).."  "..tostring(#self.actives))
+	-- Create missing auras
+	local previous = nil
+	index = 1
+	for _, _ in pairs(self.actives) do
+		local aura = self.auras[index]
+		if not aura then
+			-- create aura
+			aura = CreateFrame("Frame", "FilgerAnchor"..id.."Frame"..index, self)
+			aura:Width(16) -- default value
+			aura:Height(16) -- default value
+			aura:SetScale(1)
+			aura:SetTemplate("Default")
+			-- anchor
 			if index == 1 then
-				bar:Point(unpack(self.setPoint))
+				aura:Point(unpack(self.setPoint))
 			else
 				if self.Direction == "UP" then
-					bar:Point("BOTTOM", bars[id][index-1], "TOP", 0, self.Interval)
+					aura:Point("BOTTOM", previous, "TOP", 0, self.Interval)
 				elseif self.Direction == "RIGHT" or self.Direction == "HORIZONTAL" then
-					bar:Point("LEFT", bars[id][index-1], "RIGHT", self.Mode == "ICON" and self.Interval or value.data.barWidth + self.Interval, 0)
+					aura:Point("LEFT", previous, "RIGHT", self.Interval, 0)
 				elseif self.Direction == "LEFT" then
-					bar:Point("RIGHT", bars[id][index-1], "LEFT", self.Mode == "ICON" and -self.Interval or -(value.data.barWidth + self.Interval), 0)
+					aura:Point("RIGHT", previous, "LEFT", -self.Interval, 0)
 				else
-					bar:Point("TOP", bars[id][index-1], "BOTTOM", 0, -self.Interval)
+					aura:Point("TOP", previous, "BOTTOM", 0, -self.Interval)
 				end
 			end
-
-			if bar.icon then
-				bar.icon = _G[bar.icon:GetName()]
+			-- icon
+			if aura.icon then
+				aura.icon = _G[aura.icon:GetName()]
 			else
-				bar.icon = bar:CreateTexture("$parentIcon", "ARTWORK")
-				bar.icon:Point("TOPLEFT", 2, -2)
-				bar.icon:Point("BOTTOMRIGHT", -2, 2)
-				bar.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+				aura.icon = aura:CreateTexture("$parentIcon", "ARTWORK")
+				aura.icon:Point("TOPLEFT", 2, -2)
+				aura.icon:Point("BOTTOMRIGHT", -2, 2)
+				aura.icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 			end
-
-			if self.Mode == "ICON" then
-				bar.cooldown = CreateFrame("Cooldown", "$parentCD", bar, "CooldownFrameTemplate")
-				bar.cooldown:SetAllPoints(bar.icon)
-				bar.cooldown:SetReverse()
-
-				if bar.count then
-					bar.count = _G[bar.count:GetName()]
-				else
-					bar.count = bar:CreateFontString("$parentCount", "OVERLAY")
-					bar.count:SetFont(C["media"].uffont, 14, "OUTLINE")
-					bar.count:Point("BOTTOMRIGHT", 1, -1)
-					bar.count:SetJustifyH("CENTER")
-				end
+			-- cooldown
+			if aura.cooldown then
+				aura.cooldown = _G[aura.cooldown:GetName()]
 			else
-				if bar.statusbar then
-					bar.statusbar = _G[bar.statusbar:GetName()]
-				else
-					bar.statusbar = CreateFrame("StatusBar", "$parentStatusBar", bar);
-					bar.statusbar:Width(value.data.barWidth - 2)
-					bar.statusbar:Height(value.data.size - 10)
-					bar.statusbar:SetStatusBarTexture(C["media"].normTex)
-					bar.statusbar:SetStatusBarColor(classcolor.r, classcolor.g, classcolor.b, 1)
-					if self.IconSide == "LEFT" then
-						bar.statusbar:Point("BOTTOMLEFT", bar, "BOTTOMRIGHT", 6, 2)
-					elseif self.IconSide == "RIGHT" then
-						bar.statusbar:Point("BOTTOMRIGHT", bar, "BOTTOMLEFT", -6, 2)
-					end
-				end
-				bar.statusbar:SetMinMaxValues(0, 1)
-				bar.statusbar:SetValue(0)
-
-				if bar.bg then
-					bar.bg = _G[bar.bg:GetName()]
-				else
-					bar.bg = CreateFrame("Frame","$parentBG", bar.statusbar)
-					bar.bg:Point("TOPLEFT", -2, 2)
-					bar.bg:Point("BOTTOMRIGHT", 2, -2)
-					bar.bg:SetFrameStrata("BACKGROUND")
-					bar.bg:SetTemplate("Default")
-				end
-
-				if bar.background then
-					bar.background = _G[bar.background:GetName()]
-				else
-					bar.background = bar.statusbar:CreateTexture(nil, "BACKGROUND")
-					bar.background:SetAllPoints()
-					bar.background:SetTexture(C["media"].normTex)
-					bar.background:SetVertexColor(0, 0, 0, 0.5)
-				end
-
-				if bar.time then
-					bar.time = _G[bar.time:GetName()]
-				else
-					bar.time = bar.statusbar:CreateFontString("$parentTime", "ARTWORK")
-					bar.time:SetFont(C["media"].uffont, 14, "OUTLINE")
-					bar.time:Point("RIGHT", bar.statusbar, 0, 0)
-				end
-
-				if bar.count then
-					bar.count = _G[bar.count:GetName()]
-				else
-					bar.count = bar:CreateFontString("$parentCount", "ARTWORK")
-					bar.count:SetFont(C["media"].uffont, 14, "OUTLINE")
-					bar.count:Point("BOTTOMRIGHT", 1, 1)
-					bar.count:SetJustifyH("CENTER")
-				end
-
-				if bar.spellname then
-					bar.spellname = _G[bar.spellname:GetName()]
-				else
-					bar.spellname = bar.statusbar:CreateFontString("$parentSpellName", "ARTWORK")
-					bar.spellname:SetFont(C["media"].uffont, 14, "OUTLINE")
-					bar.spellname:Point("LEFT", bar.statusbar, 2, 0)
-					bar.spellname:SetPoint("RIGHT", bar.time, "LEFT")
-					bar.spellname:SetJustifyH("LEFT")
-				end
+				aura.cooldown = CreateFrame("Cooldown", "$parentCD", aura, "CooldownFrameTemplate")
+				aura.cooldown:SetAllPoints(aura.icon)
+				aura.cooldown:SetReverse()
 			end
-			tinsert(bars[id], bar)
-			--print("#bars["..id.."]"..(#bars[id]))
-		end
-
-		-- Update position of first 'bar' if direction is HORIZONTAL
-		if self.Direction == "HORIZONTAL" and index == 1 then
-			-- Compute total width
-			local totalWidth = self.Interval * (#active[id] - 1)
-			for _, v in ipairs(active[id]) do
-				totalWidth = totalWidth + v.data.size
-			end
-			-- Get base position
-			local point, relativeFrame, relativePoint, offsetX, offsetY = unpack(self.setPoint)
-			-- Update x-offset: remove half the total width and center adding half median width
-			offsetX = offsetX - (totalWidth  / 2)
-			-- Set position
-			bar:Point(point, relativeFrame, relativePoint, offsetX, offsetY)
-		end
-		
-		bar.spellName = value.data.spellName
-
-		bar.icon:SetTexture(value.icon)
-		bar.count:SetText(value.count > 1 and value.count or "")
-		if self.Mode == "BAR" then
-			bar.spellname:SetText(value.data.spellName)
-		end
-		if value.duration > 0 then
-			if self.Mode == "ICON" then
-				CooldownFrame_SetTimer(bar.cooldown, (value.data.filter == "CD" or value.data.filter == "ICD") and value.expirationTime or (value.expirationTime - value.duration), value.duration, 1)
-				if value.data.filter == "CD" or value.data.filter == "ICD" then
-					bar.expirationTime = value.expirationTime
-					bar.duration = value.duration
-					bar.filter = value.data.filter
-					bar:SetScript("OnUpdate", OnUpdate)
-				end
+			-- count
+			if aura.count then
+				aura.count = _G[aura.count:GetName()]
 			else
-				bar.statusbar:SetMinMaxValues(0, value.duration)
-				bar.expirationTime = value.expirationTime
-				bar.duration = value.duration
-				bar.filter = value.data.filter
-				bar:SetScript("OnUpdate", OnUpdate)
+				aura.count = aura:CreateFontString("$parentCount", "OVERLAY")
+				aura.count:SetFont(C["media"].uffont, 14, "OUTLINE")
+				aura.count:Point("BOTTOMRIGHT", 1, -1)
+				aura.count:SetJustifyH("CENTER")
 			end
+			-- insert aura
+			self.auras[index] = aura
+		end
+		-- save previous
+		previous = aura
+		-- next
+		index = index + 1
+	end
+	-- Update texture, count, cd, size, opacity
+	local totalWidth = 0
+	index = 1
+	for activeIndex, value in pairs(self.actives) do
+--print("SHOW:"..tostring(activeIndex).."  "..tostring(index).."  "..tostring(value.name).."  "..tostring(value.data.spellID))
+		local aura = self.auras[index]
+		aura.icon:SetTexture(value.icon)
+		if value.count and value.count > 1 then
+			aura.count:SetText(value.count)
+			aura.count:Show()
 		else
-			if self.Mode == "ICON" then
-				bar.cooldown:Hide()
-			else
-				bar.statusbar:SetMinMaxValues(0, 1)
-				bar.statusbar:SetValue(1)
-				bar.time:SetText("")
-				bar:SetScript("OnUpdate", nil)
-			end
+			aura.count:Hide()
 		end
-
-		bar:Show()
+		if value.duration and value.duration > 0 then
+			CooldownFrame_SetTimer(aura.cooldown, value.start, value.duration, 1)
+			if value.data.filter == "CD" or value.data.filter == "ICD" then
+				aura.value = value
+				aura.activeIndex = activeIndex
+				aura:SetScript("OnUpdate", Filger.UpdateCD)
+			else
+				aura:SetScript("OnUpdate", nil)
+			end
+			aura.cooldown:Show()
+		else
+			aura:SetScript("OnUpdate", nil)
+			aura.cooldown:Hide()
+		end
+		aura:Width(value.data.size)
+		aura:Height(value.data.size)
+		aura:SetAlpha(value.data.opacity or 1.0)
+		totalWidth = totalWidth + value.data.size + self.Interval
+		-- show
+		aura:Show()
+		-- next
+		index = index + 1
+	end
+	-- Update horizontal anchoring
+	if index > 1 and self.Direction == "HORIZONTAL" then
+		-- Compute total width
+		totalWidth = totalWidth - self.Interval -- remove last interval
+		-- Get base position
+		local point, relativeFrame, relativePoint, offsetX, offsetY = unpack(self.setPoint)
+		-- Update x-offset: remove half the total width
+		offsetX = offsetX - (totalWidth / 2)
+		-- Set position
+		local aura = self.auras[1]
+		aura:Point(point, relativeFrame, relativePoint, offsetX, offsetY)
+	end
+	-- Hide remaining
+	for i = index, #self.auras, 1 do
+--print("HIDE:"..tostring(i))
+		local aura = self.auras[i]
+		aura:Hide()
 	end
 end
 
-local function OnEvent(self, event, ...)
-	local unit = ...
-	if unit == "target" or unit == "player" or unit == "pet" or unit == "focus" or event == "PLAYER_TARGET_CHANGED" or event == "PLAYER_ENTERING_WORLD" or event == "SPELL_UPDATE_COOLDOWN" then
+function Filger:OnEvent(event, unit)
+	if event == "SPELL_UPDATE_COOLDOWN" or event == "PLAYER_TARGET_CHANGED" or event == "PLAYER_FOCUS_CHANGED" or event == "PLAYER_ENTERING_WORLD" or event == "UNIT_AURA" and (unit == "target" or unit == "player" or unit == "pet" or unit == "focus") then
+		local ptt = GetPrimaryTalentTree()
+		local needUpdate = false
 		local id = self.Id
-		for i = 1, #Filger_Spells[class][id], 1 do
-			local data, name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable, start, enabled, slotLink, spn
-			data = Filger_Spells[class][id][i]
-			--DEFAULT_CHAT_FRAME:AddMessage("FILGER: spellID:"..data.spellID.." filter:"..data.filter)
-			if data.filter == "BUFF" then
-				spn = GetSpellInfo(data.spellID)
-				name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = FilgerUnitBuff(data.unitId, data.spellID, spn, data.absID)
-			elseif data.filter == "DEBUFF" then
-				spn = GetSpellInfo(data.spellID)
-				name, rank, icon, count, debuffType, duration, expirationTime, caster, isStealable = FilgerUnitDebuff(data.unitId, data.spellID, spn, data.absID)
-			elseif data.filter == "CD" then
-				if data.spellID then
-					spn = GetSpellInfo(data.spellID)
-					start, duration, enabled = GetSpellCooldown(spn)
-					_, _, icon = GetSpellInfo(data.spellID)
+		for i = 1, #Filger_Spells[T.myclass][id], 1 do
+			local data = Filger_Spells[T.myclass][id][i]
+			if not data.spec or data.spec == ptt then
+				local found = false
+				local name, icon, count, duration, start
+				if data.filter == "BUFF" then
+					local caster, spn, expirationTime
+					spn, _, icon = GetSpellInfo(data.spellID)
+					name, _, _, count, _, duration, expirationTime, caster = Filger:UnitBuff(data.unitId, data.spellID, spn, data.absID)
+					if name and (data.caster == "all" or data.caster == caster) then
+						start = expirationTime - duration
+						found = true
+					end
+				elseif data.filter == "DEBUFF" then
+					local caster, spn, expirationTime
+					spn, _, icon = GetSpellInfo(data.spellID)
+					name, _, _, count, _, duration, expirationTime, caster = Filger:UnitDebuff(data.unitId, data.spellID, spn, data.absID)
+					if name and (data.caster == "all" or data.caster == caster) then
+						start = expirationTime - duration
+						found = true
+					end
+				elseif data.filter == "IBUFF" and (not data.incombat or InCombatLockdown()) then
+					local spn
+					spn, _, icon = GetSpellInfo(data.spellID)
+					name = Filger:UnitBuff(data.unitId, data.spellID, spn, data.absID)
+					if not name then
+						found = true
+						name = spn
+					end
+				elseif data.filter == "IDEBUFF" and (not data.incombat or InCombatLockdown()) then
+					local spn
+					spn, _, icon = GetSpellInfo(data.spellID)
+					name = Filger:UnitDebuff(data.unitId, data.spellID, spn, data.absID)
+					if not name then
+						found = true
+						name = spn
+					end
+				elseif data.filter == "CD" then
+					if data.spellID then
+						name = GetSpellInfo(data.spellID)
+						start, duration = GetSpellCooldown(name)
+						_, _, icon = GetSpellInfo(data.spellID)
+					elseif data.slotID then
+						local slotLink = GetInventoryItemLink("player", data.slotID)
+						if slotLink then
+							name, _, _, _, _, _, _, _, _, icon = GetItemInfo(slotLink)
+							start, duration = GetInventoryItemCooldown("player", data.slotID)
+						end
+					end
+					if name and (duration or 0) > 1.5 then
+						found = true
+					end
+				elseif data.filter == "ICD" then
+					if data.trigger == "BUFF" then
+						local spn
+						spn, _, icon = GetSpellInfo(data.spellID)
+						name = Filger:UnitBuff("player", data.spellID, spn, data.absID)
+					elseif data.trigger == "DEBUFF" then
+						local spn
+						spn, _, icon = GetSpellInfo(data.spellID)
+						name = Filger:UnitDebuff("player", data.spellID, spn, data.absID)
+					end
+					if name then
+						if data.slotID then
+							local slotLink = GetInventoryItemLink("player", data.slotID)
+							_, _, _, _, _, _, _, _, _, icon = GetItemInfo(slotLink)
+						end
+						duration = data.duration
+						start = GetTime()
+						found = true
+					end
+				end
+				if found then
+					if not self.actives then self.actives = {} end
+					if not self.actives[i] then
+--print("INSERT["..tostring(id).."]:"..tostring(i).."->"..tostring(data.spellID).." "..tostring(name).." "..tostring(data.filter).." "..tostring(count).." "..tostring(start).." "..tostring(duration))
+						self.actives[i] = {data = data, name = name, icon = icon, count = count, start = start, duration = duration}
+						needUpdate = true
+					else
+						if data.filter ~= "ICD" and (self.actives[i].count ~= count or self.actives[i].start ~= start or self.actives[i].duration ~= duration) then
+--print("UPDATE["..tostring(id).."]:"..tostring(i).."->"..tostring(data.spellID).." "..tostring(name).." "..tostring(data.filter).." "..tostring(count).." "..tostring(start).." "..tostring(duration))
+							self.actives[i].count = count
+							self.actives[i].start = start
+							self.actives[i].duration = duration
+							needUpdate = true
+						end
+					end
 				else
-					slotLink = GetInventoryItemLink("player", data.slotID);
-					if slotLink then
-						name, _, _, _, _, _, _, _, _, icon = GetItemInfo(slotLink)
-						data.spellName = name
-						start, duration, enabled = GetInventoryItemCooldown("player", data.slotID)
-						--DEFAULT_CHAT_FRAME:AddMessage("FILGER: slotID:"..data.slotID.." filter:"..data.filter.." name:"..(name or "").." duration:"..(duration or 0).." enabled:"..(enabled or 0))
+					if data.filter ~= "ICD" and self.actives and self.actives[i] then
+--local toRemove = self.actives[i]
+--print("REMOVE["..tostring(id).."]:"..tostring(i).."->"..tostring(toRemove.data.spellID).."  "..tostring(toRemove.name).."  "..tostring(toRemove.data.filter))
+						self.actives[i] = nil -- remove BUFF/DEBUFF/CD(only when BUFF/DEBUFF modified, CD are removed in UpdateCD)
+						needUpdate = true
 					end
-				end
-				count = 0
-				caster = "all"
-			elseif data.filter == "ICD" then
-				if data.trigger == "BUFF" then
-					spn = GetSpellInfo(data.spellID)
-					name, _, icon = FilgerUnitBuff("player", data.spellID, spn, data.absID)
-				elseif data.trigger == "DEBUFF" then
-					spn = GetSpellInfo(data.spellID)
-					name, _, icon = UnitDebuff("player", data.spellID, spn, data.absID)
-				end
-				start = GetTime()
-				duration = data.duration
-				caster = "all"
-				count = 0
-				if name then
-					if data.slotID then
-						slotLink = GetInventoryItemLink("player", data.slotID)
-						name, _, _, _, _, _, _, _, _, icon = GetItemInfo(slotLink)
-						spn = name
-					end
-					enabled = 1
-				end
---print("ICD:"..tostring(spn).."  "..tostring(name).."  "..tostring(enabled))
-			end
-			if not data.spellName then
-				data.spellName = spn
-			end
-			if not active[id] then
-				active[id] = {}
-			end
-
-			-- remove existing and insert if needed
-			local toInsert = true -- by default, insert in active
-			if data.filter == "ICD" then
-				-- Don't insert if an ICD already exists
-				for index, value in ipairs(active[id]) do
-					if data.spellName == value.data.spellName and value.data.filter == "ICD" then
-						toInsert = false
-						break
-					end
-				end
-			else
-				-- Remove existing non-ICD
-				for index, value in ipairs(active[id]) do
-					if data.spellName == value.data.spellName and value.data.filter ~= "ICD" then
-						tremove(active[id], index)
-						--print("#active["..id.."]"..(#active[id]))
-					end
-				end
-			end
-			if toInsert then
-				if (name and (data.caster ~= 1 and (caster == data.caster or data.caster == "all") or MyUnits[caster])) or ((enabled or 0) > 0 and (duration or 0) > 1.5) then
-					table.insert(active[id], { data = data, icon = icon, count = count, duration = duration, expirationTime = expirationTime or start, filter == data.filter })
 				end
 			end
 		end
-		Update(self)
+
+		if needUpdate and self.actives then
+			-- for k, v in pairs(self.actives) do
+--print("ACTIVE["..tostring(id).."]:"..tostring(k).."->"..tostring(v.data.spellID).." "..tostring(v.name))
+			-- end
+			Filger.DisplayActives(self)
+		end
 	end
 end
 
+-- Build final spell-list
 if Filger_Spells and Filger_Spells["ALL"] then
 	-- add spell-list found in section ALL to class-specific section
-	if not Filger_Spells[class] then
-		Filger_Spells[class] = {}
+	if not Filger_Spells[T.myclass] then
+		Filger_Spells[T.myclass] = {}
 	end
 
 	for i = 1, #Filger_Spells["ALL"], 1 do
@@ -348,8 +305,8 @@ if Filger_Spells and Filger_Spells["ALL"] then
 		local merge = false
 		local spellListAll = Filger_Spells["ALL"][i]
 		local spellListClass = nil
-		for j = 1, #Filger_Spells[class], 1 do
-			spellListClass = Filger_Spells[class][j]
+		for j = 1, #Filger_Spells[T.myclass], 1 do
+			spellListClass = Filger_Spells[T.myclass][j]
 			local mergeAll = spellListAll.Merge or false
 			local mergeClass = spellListClass.Merge or false
 			if spellListClass.Name == spellListAll.Name and (mergeAll or mergeClass) then
@@ -359,7 +316,7 @@ if Filger_Spells and Filger_Spells["ALL"] then
 		end
 		if not merge or not spellListClass then
 			-- add another spell-list
-			table.insert(Filger_Spells[class], Filger_Spells["ALL"][i])
+			table.insert(Filger_Spells[T.myclass], Filger_Spells["ALL"][i])
 		else
 			-- merge spell-list but class-specific position, direction, ...
 			--DEFAULT_CHAT_FRAME:AddMessage("FILGER: MERGING SPELLS FROM "..spellListAll.Name)
@@ -370,18 +327,18 @@ if Filger_Spells and Filger_Spells["ALL"] then
 	end
 end
 
-if Filger_Spells and Filger_Spells[class] then
+if Filger_Spells and Filger_Spells[T.myclass] then
 	-- remove non-class specific spell-list
 	for index in pairs(Filger_Spells) do
-		if index ~= class then
+		if index ~= T.myclass then
 			Filger_Spells[index] = nil
 		end
 	end
 	-- remove invalid/disabled spell
 	local idx = {}
-	for i = 1, #Filger_Spells[class], 1 do
+	for i = 1, #Filger_Spells[T.myclass], 1 do
 		local jdx = {}
-		local data = Filger_Spells[class][i]
+		local data = Filger_Spells[T.myclass][i]
 
 		if data.Enabled == false then
 			print("Filger: Disabled section -> "..data.Name)
@@ -392,7 +349,7 @@ if Filger_Spells and Filger_Spells[class] then
 				if data[j].spellID then
 					spn = GetSpellInfo(data[j].spellID)
 				else
-					local slotLink = GetInventoryItemLink("player", data[j].slotID);
+					local slotLink = GetInventoryItemLink("player", data[j].slotID)
 					if slotLink then
 						spn = GetItemInfo(slotLink)
 					end
@@ -415,13 +372,14 @@ if Filger_Spells and Filger_Spells[class] then
 		end
 	end
 	for _, v in ipairs(idx) do
-		table.remove(Filger_Spells[class], v)
+		table.remove(Filger_Spells[T.myclass], v)
 	end
 
 	-- create frame for each spell-list
-	for i = 1, #Filger_Spells[class], 1 do
-		local data = Filger_Spells[class][i]
-		local frame = CreateFrame("Frame", "FilgerAnchor"..i, UIParent)
+	for i = 1, #Filger_Spells[T.myclass], 1 do
+		local data = Filger_Spells[T.myclass][i]
+		local frame = CreateFrame("Frame", "FilgerFrame"..i.."_"..data.Name, UIParent)
+--print("FRAME CREATED:"..tostring(frame).."  "..tostring(frame:GetName()).."  "..tostring(Filger))
 		frame.Id = i
 		frame.Name = data.Name
 		frame.Direction = data.Direction or "DOWN"
@@ -429,43 +387,41 @@ if Filger_Spells and Filger_Spells[class] then
 		frame.Interval = data.Interval or 3
 		frame.Mode = data.Mode or "ICON"
 		frame.setPoint = data.setPoint or "CENTER"
-		frame:Width(Filger_Spells[class][i][1] and Filger_Spells[class][i][1].size or 100)
-		frame:Height(Filger_Spells[class][i][1] and Filger_Spells[class][i][1].size or 20)
+		frame:Width(Filger_Spells[T.myclass][i][1] and Filger_Spells[T.myclass][i][1].size or 100)
+		frame:Height(Filger_Spells[T.myclass][i][1] and Filger_Spells[T.myclass][i][1].size or 20)
 		frame:Point(unpack(data.setPoint))
 		frame:SetAlpha(data.Opacity or 1.0)
 
 		-- Set size to each spell in spell-list if specified
 		if data.Size then
 			for j = 1, #data, 1 do
-				local spell = Filger_Spells[class][i][j]
+				local spell = Filger_Spells[T.myclass][i][j]
 				spell.size = data.Size
 			end
 		end
 
-		if f_s.configmode then
-			for j = 1, math.min(4,#Filger_Spells[class][i]), 1 do
-				local data = Filger_Spells[class][i][j]
-				if not active[i] then
-					active[i] = {}
-				end
-				local spellIcon
+		if ns.Filger_Settings.configmode then
+			frame.actives = {}
+			for j = 1, math.min(4,#Filger_Spells[T.myclass][i]), 1 do
+				local data = Filger_Spells[T.myclass][i][j]
+				local name, icon
 				if data.spellID then
-					_, _, spellIcon = GetSpellInfo(data.spellID)
-				else
+					name, _, icon = GetSpellInfo(data.spellID)
+				elseif data.slotID then
 					local slotLink = GetInventoryItemLink("player", data.slotID)
 					if slotLink then
-						_, _, _, _, _, _, _, _, _, spellIcon = GetItemInfo(slotLink)
+						name, _, _, _, _, _, _, _, _, icon = GetItemInfo(slotLink)
 					end
 				end
-				table.insert(active[i], { data = data, icon = spellIcon, count = 9, duration = 0, expirationTime = 0, filter = data.filter })
+				frame.actives[j] = {data = data, name = name, icon = icon, count = 9, start = 0, duration = 0}
 			end
-			Update(frame)
+			Filger.DisplayActives(frame)
 		else
 			local CDFound = false
 			local focusFound = false
 			local targetFound = false
-			for j = 1, #Filger_Spells[class][i], 1 do
-				local data = Filger_Spells[class][i][j]
+			for j = 1, #Filger_Spells[T.myclass][i], 1 do
+				local data = Filger_Spells[T.myclass][i][j]
 				if data.filter == "CD" then
 					CDFound = true
 				elseif data.unitID == "target" then
@@ -479,7 +435,7 @@ if Filger_Spells and Filger_Spells[class] then
 			if focusFound then frame:RegisterEvent("PLAYER_FOCUS_CHANGED") end
 			frame:RegisterEvent("UNIT_AURA")
 			frame:RegisterEvent("PLAYER_ENTERING_WORLD")
-			frame:SetScript("OnEvent", OnEvent)
+			frame:SetScript("OnEvent", Filger.OnEvent)
 		end
 	end
 end
