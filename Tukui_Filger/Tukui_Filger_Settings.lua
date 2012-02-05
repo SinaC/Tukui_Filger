@@ -1322,8 +1322,11 @@ ns.Filger_Spells = {
 			Mode = "ICON",
 			Opacity = 0.5,
 			setPoint = { "LEFT", UIParent, "CENTER", 0, 0 },
+
 			-- Power Torrent
 			{ spellID = 74241, trigger = "BUFF", size = 47, duration = 45--[[, slotID = 16--]], filter = "ICD" }, -- if slotID not specified, spellID is used as icon
+			-- Lifeblood (Herbalism)
+			{ spellID = 55503, size = 32, filter = "CD" },
 		},
 
 		{
@@ -1356,6 +1359,9 @@ ns.Filger_Spells = {
 			{ spellID = 54758, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Synapse Springs/Synapsenfedern
 			{ spellID = 82175, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
+
+			-- Lifeblood (Herbalism)
+			{ spellID = 55503, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
 
 			-- Speed/Geschwindigkeit
 			{ spellID = 53908, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
