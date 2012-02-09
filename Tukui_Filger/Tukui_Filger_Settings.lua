@@ -24,32 +24,69 @@ ns.Filger_Settings = {
 ns.Filger_Spells = {
 	["DRUID"] = {
 		{
-			Name = "COOLDOWN",
+			Name = "SHORT_COOLDOWN",
 			Direction = "HORIZONTAL",
 			Interval = 1,
 			Mode = "ICON",
 			Opacity = 0.5,
 			Merge = true,
+			Filter = "CD",
 			Size = 37,
-			--setPoint = { "LEFT", UIParent, "CENTER", 0, -180 },
 			setPoint = { "LEFT", UIParent, "CENTER", 0, -40 },
 
+			-- Faerie Fire (Feral)
+			{ spellID = 16857 },
+			-- Skull Bash (Bear), 80965 (Cat)
+			{ spellID = 80964 },
+			-- Mangle (Bear)
+			{ spellID = 33878 },
+			-- Growl
+			{ spellID = 6795 },
+			-- Trash
+			{ spellID = 77758 },
+			-- Swipe (Bear)
+			{ spellID = 779 },
+		},
+		{
+			Name = "COOLDOWN",
+			Direction = "UP",
+			Interval = 1,
+			Mode = "ICON",
+			Opacity = 1.0,
+			Merge = true,
+			Filter = "CD",
+			Size = 37,
+			--ForceSize = true,
+			setPoint = { "LEFT", UIParent, "CENTER", 198, -88 },
+
 			-- Nature Swiftness
-			{ spellID = 17116, size = 47, filter = "CD" },
+			{ spellID = 17116 },
 			-- Innervate
-			{ spellID = 29166, size = 47, filter = "CD" },
+			{ spellID = 29166 },
 			-- Barkskin
-			{ spellID = 22812, size = 47, filter = "CD" },
+			{ spellID = 22812 },
 			-- Tree of Life
-			{ spellID = 33891, size = 47, filter = "CD" },
+			{ spellID = 33891 },
 			-- Tranquility
-			{ spellID = 740, size = 47, filter = "CD" },
+			{ spellID = 740 },
 			-- Berserk
-			{ spellID = 50334, size = 47, filter = "CD" },
+			{ spellID = 50334 },
 			-- Tiger Fury
-			{ spellID = 5217, size = 47, filter = "CD" },
+			{ spellID = 5217 },
 			-- Survival Instincts/Überlebensinstinkte
-			{ spellID = 61336, size = 47, filter = "CD" },
+			{ spellID = 61336 },
+			-- Enrage
+			{ spellID = 5229 },
+			-- Dash
+			{ spellID = 1850 },
+			-- Stampeding Roar
+			{ spellID = 77761 },
+			-- Challenging Roar
+			{ spellID = 5209 },
+			-- Bash
+			{ spellID = 5211 },
+			-- Feral Charge (Bear), 49376 (Cat), 49377 (Talent)
+			{ spellID = 16979 },
 
 			-- Nature's Grace
 			{ spellID = 16886, size = 47, filter = "ICD", trigger = "BUFF", duration = 60 },
@@ -114,16 +151,23 @@ ns.Filger_Spells = {
 			Opacity = 0.8,
 			Mode = "ICON",
 			Merge = true,
+			Size = 37,
+			Filter = "BUFF",
+			UnitId = "player",
 			setPoint = { "RIGHT", UIParent, "CENTER", -148, 0 },
 
 			-- Barkskin/Baumrinde
-			{ spellID = 22812, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
+			{ spellID = 22812, caster = "player" },
 			-- Innervate/Anregen
-			{ spellID = 29166, size = 47, unitId = "player", caster = "all", filter = "BUFF" },
+			{ spellID = 29166, caster = "all" },
 			-- Tree of Life/Baum des Lebens
-			{ spellID = 33891, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
+			{ spellID = 33891, caster = "player" },
 			-- Nature's Grace
-			{ spellID = 16886, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
+			{ spellID = 16886, caster = "player" },
+			-- Dash
+			{ spellID = 1850, caster = "player" },
+			-- Stampeding Roar
+			{ spellID = 77761, caster = "all" },
 		},
 		{
 			Name = "P_BUFF_ICON_FERAL",
@@ -131,18 +175,21 @@ ns.Filger_Spells = {
 			Interval = 4,
 			Opacity = 0.8,
 			Mode = "ICON",
+			Size = 37,
+			Filter = "BUFF",
+			UnitId = "player",
 			setPoint = { "RIGHT", UIParent, "CENTER", -37, -88 },
 
 			-- Pulverize
-			{ spellID = 80313, size = 37, unitId = "player", caster = "player", filter = "BUFF" },
+			{ spellID = 80313, caster = "player" },
 			-- Savage Roar/Wildes Brüllen
-			{ spellID = 52610, size = 37, unitId = "player", caster = "player", filter = "BUFF" },
+			{ spellID = 52610, caster = "player" },
 			-- Tiger Fury
-			{ spellID = 5217, size = 37, unitId = "player", caster = "player", filter = "BUFF" },
+			{ spellID = 5217, caster = "player" },
 			-- Survival Instincts/Überlebensinstinkte
-			{ spellID = 61336, size = 37, unitId = "player", caster = "player", filter = "BUFF" },
+			{ spellID = 61336, caster = "player" },
 			-- Berserk
-			{ spellID = 50334, size = 37, unitId = "player", caster = "player", filter = "BUFF" },
+			{ spellID = 50334, caster = "player" },
 		},
 		--[[
 		{
@@ -205,7 +252,7 @@ ns.Filger_Spells = {
 			-- Demoralizing Roar
 			{ spellID = 99, size = 37, unitId = "target", caster = "player", filter = "DEBUFF" },
 			-- Mangle/Zerfleischen
-			{ spellID = 33876, size = 37, unitId = "target", caster = "all", filter = "DEBUFF" },
+			{ spellID = 33876, size = 37, unitId = "target", caster = "all", spec = 2, filter = "DEBUFF" },
 			-- Faerie Fire/Feenfeuer
 			{ spellID = 91565, size = 37, unitId = "target", caster = "all", filter = "DEBUFF" },
 		},

@@ -225,9 +225,9 @@ function Filger:OnEvent(event, unit)
 					end
 				elseif data.filter == "CD" then
 					if data.spellID then
-						name = GetSpellInfo(data.spellID)
+						name, _, icon = GetSpellInfo(data.spellID)
 						start, duration = GetSpellCooldown(name)
-						_, _, icon = GetSpellInfo(data.spellID)
+						--_, _, icon = GetSpellInfo(data.spellID)
 					elseif data.slotID then
 						local slotLink = GetInventoryItemLink("player", data.slotID)
 						if slotLink then
@@ -392,12 +392,19 @@ if Filger_Spells and Filger_Spells[T.myclass] then
 		frame:Point(unpack(data.setPoint))
 		frame:SetAlpha(data.Opacity or 1.0)
 
-		-- Set size to each spell in spell-list if specified
-		if data.Size then
+		---- Set size to each spell in spell-list if specified
+		-- if data.Size then
+			-- for j = 1, #data, 1 do
+				-- local spell = Filger_Spells[T.myclass][i][j]
+				-- spell.size = data.Size
+			-- end
+		-- end
+		-- Set default value (Size, Filter and UnitId) to each spell in spell-list
 			for j = 1, #data, 1 do
 				local spell = Filger_Spells[T.myclass][i][j]
-				spell.size = data.Size
-			end
+			if data.Size and (ForceSize or not spell.size) then spell.size = data.Size end
+			if data.Filter and not spell.filter then spell.filter = data.Filter end
+			if data.UnitId and not spell.UnitId then spell.unitId = data.UnitId end
 		end
 
 		if ns.Filger_Settings.configmode then
