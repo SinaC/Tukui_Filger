@@ -45,7 +45,7 @@ ns.Filger_Spells = {
 			-- Trash
 			{ spellID = 77758 },
 			-- Swipe (Bear)
-			{ spellID = 779 },
+			{ spellID = 779, name = "Balayage(Forme d'ours)" },
 		},
 		{
 			Name = "COOLDOWN",
@@ -147,7 +147,7 @@ ns.Filger_Spells = {
 		{
 			Name = "P_BUFF_ICON",
 			Direction = "LEFT",
-			Interval = 4,
+			Interval = 1,
 			Opacity = 0.8,
 			Mode = "ICON",
 			Merge = true,
@@ -172,7 +172,7 @@ ns.Filger_Spells = {
 		{
 			Name = "P_BUFF_ICON_FERAL",
 			Direction = "LEFT",
-			Interval = 4,
+			Interval = 1,
 			Opacity = 0.8,
 			Mode = "ICON",
 			Size = 37,
@@ -235,7 +235,7 @@ ns.Filger_Spells = {
 		{
 			Name = "T_DEBUFF_ICON",
 			Direction = "RIGHT",
-			Interval = 4,
+			Interval = 1,
 			Mode = "ICON",
 			setPoint = { "LEFT", UIParent, "CENTER", 37, -88 },
  
@@ -260,7 +260,7 @@ ns.Filger_Spells = {
 			Name = "F/DEBUFF_BAR",
 			Direction = "UP",
 			IconSide = "LEFT",
-			Interval = 4,
+			Interval = 1,
 			Mode = "ICON",
 			setPoint = { "LEFT", UIParent, "CENTER", 148, 100 },
 
