@@ -143,15 +143,15 @@ function Filger:DisplayActives()
 	-- end
 	--for k, v in pairsByKeys(self.actives) do
 
-	-- Sort actives
-	if not self.sortedIndex then self.sortedIndex = {} end
-	local activeCount = 1
-	for n in pairs(self.actives) do
---print("UNSORTED "..tostring(n))
-		self.sortedIndex[activeCount] = n
-		activeCount = activeCount + 1
-	end
-	table.sort(self.sortedIndex)
+	-- -- Sort actives
+	-- if not self.sortedIndex then self.sortedIndex = {} end
+	-- local activeCount = 1
+	-- for n in pairs(self.actives) do
+-- --print("UNSORTED "..tostring(n))
+		-- self.sortedIndex[activeCount] = n
+		-- activeCount = activeCount + 1
+	-- end
+	-- table.sort(self.sortedIndex)
 -- for n in pairs(self.sortedIndex) do
 -- print("SORTED "..tostring(n).."  "..tostring(self.sortedIndex[n]))
 -- end
@@ -159,13 +159,13 @@ function Filger:DisplayActives()
 	-- Update texture, count, cd, size, opacity
 	local totalWidth = 0
 	index = 1
-	--for activeIndex, value in pairs(self.actives) do
-	for n in pairs(self.sortedIndex) do
-		if n >= activeCount then
-			break -- sortedIndex may be greater than actives
-		end
-		local activeIndex = self.sortedIndex[n]
-		local value = self.actives[activeIndex] -- Get sorted active
+	for activeIndex, value in pairs(self.actives) do
+	--for n in pairs(self.sortedIndex) do
+		-- if n >= activeCount then
+			-- break -- sortedIndex may be greater than actives
+		-- end
+		-- local activeIndex = self.sortedIndex[n]
+		-- local value = self.actives[activeIndex] -- Get sorted active
 
 --print("SHOW:"..tostring(activeIndex).."  "..tostring(index).."  "..tostring(value.name).."  "..tostring(value.data.spellID))
 		local aura = self.auras[index]
