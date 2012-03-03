@@ -46,6 +46,8 @@ ns.Filger_Spells = {
 			{ spellID = 77758 },
 			-- Swipe (Bear)
 			{ spellID = 779, name = "Balayage(Forme d'ours)" },
+			-- Feral Charge
+			{ spellID = 49376 },
 		},
 		{
 			Name = "COOLDOWN",

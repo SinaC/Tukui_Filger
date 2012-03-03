@@ -11,6 +11,11 @@
 -- TODO:
 -- 1) Is there a way to have the icon show when a spell is ready? YES but GCD causes problem: icon is flickering (check ACD in iFilger to see this problem)
 
+-- Notes for Ildyria:
+--	we have to sort because pairs return value sorted by insertion order and not index order
+--	absID doesn't work for feral druid CD, no distinction between cat/bear even if we use ability name instead of spellID, it works for swipe but not for charge
+
+
 local T, C, L = unpack(Tukui) -- Import: T - functions, constants, variables; C - config; L - locales
 
 local _, ns = ...
@@ -143,15 +148,23 @@ function Filger:DisplayActives()
 	-- end
 	--for k, v in pairsByKeys(self.actives) do
 
-	-- -- Sort actives
-	-- if not self.sortedIndex then self.sortedIndex = {} end
-	-- local activeCount = 1
-	-- for n in pairs(self.actives) do
--- --print("UNSORTED "..tostring(n))
-		-- self.sortedIndex[activeCount] = n
-		-- activeCount = activeCount + 1
-	-- end
-	-- table.sort(self.sortedIndex)
+	-- Sort actives
+	if not self.sortedIndex then self.sortedIndex = {} end
+	-- Clear sorted (it would be easier to recreate self.sortedIndex or use a local array but this would not be GC-friendly)
+	for n in pairs(self.sortedIndex) do
+		self.sortedIndex[n] = 999 -- dummy high value
+	end
+--print("TEST: "..tostring(#self.sortedIndex))
+	local activeCount = 1
+	for n in pairs(self.actives) do
+--print("FILL UNSORTED "..tostring(n).."  OLD: "..tostring(activeCount).."  "..tostring(self.sortedIndex[activeCount]))
+		self.sortedIndex[activeCount] = n
+		activeCount = activeCount + 1
+	end
+-- for n in pairs(self.sortedIndex) do
+-- print("UNSORTED2 "..tostring(n).."  "..tostring(self.sortedIndex[n]))
+-- end
+	table.sort(self.sortedIndex)
 -- for n in pairs(self.sortedIndex) do
 -- print("SORTED "..tostring(n).."  "..tostring(self.sortedIndex[n]))
 -- end
@@ -159,15 +172,19 @@ function Filger:DisplayActives()
 	-- Update texture, count, cd, size, opacity
 	local totalWidth = 0
 	index = 1
-	for activeIndex, value in pairs(self.actives) do
-	--for n in pairs(self.sortedIndex) do
-		-- if n >= activeCount then
-			-- break -- sortedIndex may be greater than actives
-		-- end
-		-- local activeIndex = self.sortedIndex[n]
-		-- local value = self.actives[activeIndex] -- Get sorted active
+	--for activeIndex, value in pairs(self.actives) do
+	for n in pairs(self.sortedIndex) do
+--print("SORTED2 "..tostring(n).."  "..tostring(self.sortedIndex[n]).."  "..tostring(activeCount))
+		if n >= activeCount then
+			break -- sortedIndex may be greater than actives
+		end
+		local activeIndex = self.sortedIndex[n]
+		local value = self.actives[activeIndex] -- Get sorted active
+-- if not value then
+-- print("INVALID INDEX "..tostring(activeIndex))
+-- end
 
---print("SHOW:"..tostring(activeIndex).."  "..tostring(index).."  "..tostring(value.name).."  "..tostring(value.data.spellID))
+-- print("SHOW:"..tostring(activeIndex).."  "..tostring(index).."  "..tostring(value.name).."  "..tostring(value.data.spellID))
 		local aura = self.auras[index]
 		aura.icon:SetTexture(value.icon)
 		if value.count and value.count > 1 then
@@ -220,6 +237,9 @@ function Filger:DisplayActives()
 end
 
 function Filger:OnEvent(event, unit)
+-- if event == "PLAYER_TARGET_CHANGED" then
+-- print("PLAYER_TARGET_CHANGED")
+-- end
 	if event == "SPELL_UPDATE_COOLDOWN" or event == "PLAYER_TARGET_CHANGED" or event == "PLAYER_FOCUS_CHANGED" or event == "PLAYER_ENTERING_WORLD" or event == "UNIT_AURA" and (unit == "target" or unit == "player" or unit == "pet" or unit == "focus") then
 		local ptt = GetPrimaryTalentTree()
 		local needUpdate = false
@@ -264,10 +284,14 @@ function Filger:OnEvent(event, unit)
 				elseif data.filter == "CD" then
 					if data.spellID then
 						name, _, icon = GetSpellInfo(data.spellID)
-						if data.name then
-							start, duration = GetSpellCooldown(data.name)
+						if data.absID then
+							start, duration = GetSpellCooldown(data.spellID)
 						else
-							start, duration = GetSpellCooldown(name)
+							if data.name then
+								start, duration = GetSpellCooldown(data.name)
+							else
+								start, duration = GetSpellCooldown(name)
+							end
 						end
 					elseif data.slotID then
 						local slotLink = GetInventoryItemLink("player", data.slotID)
@@ -479,8 +503,8 @@ if Filger_Spells and Filger_Spells[T.myclass] then
 				end
 			end
 			if CDFound then frame:RegisterEvent("SPELL_UPDATE_COOLDOWN") end
-			if targetFound then frame:RegisterEvent("PLAYER_TARGET_CHANGED") end
-			if focusFound then frame:RegisterEvent("PLAYER_FOCUS_CHANGED") end
+			frame:RegisterEvent("PLAYER_TARGET_CHANGED")--if targetFound then frame:RegisterEvent("PLAYER_TARGET_CHANGED") end
+			frame:RegisterEvent("PLAYER_FOCUS_CHANGED")--if focusFound then frame:RegisterEvent("PLAYER_FOCUS_CHANGED") end
 			frame:RegisterEvent("UNIT_AURA")
 			frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 			frame:SetScript("OnEvent", Filger.OnEvent)
