@@ -48,6 +48,8 @@ ns.Filger_Spells = {
 			{ spellID = 779, name = "Balayage(Forme d'ours)" },
 			-- Feral Charge
 			{ spellID = 49376 },
+			-- Maul
+			{ spellID = 6807 },
 		},
 		{
 			Name = "COOLDOWN",
@@ -57,7 +59,7 @@ ns.Filger_Spells = {
 			Opacity = 1.0,
 			Merge = true,
 			Filter = "CD",
-			Size = 37,
+			Size = 47,
 			--ForceSize = true,
 			setPoint = { "LEFT", UIParent, "CENTER", 198, -88 },
 
@@ -91,7 +93,7 @@ ns.Filger_Spells = {
 			{ spellID = 16979 },
 
 			-- Nature's Grace
-			{ spellID = 16886, size = 47, filter = "ICD", trigger = "BUFF", duration = 60 },
+			{ spellID = 16886, filter = "ICD", trigger = "BUFF", duration = 60 },
 		},
 		{
 			Name = "P_PROC_ICON",
@@ -1323,8 +1325,8 @@ ns.Filger_Spells = {
 			{ spellID = 109908, size = 52, unitId = "player", caster = "player", filter = "DEBUFF", absID = true },
 			-- Titanic Strength (Eye of Unmaking/Rotting Skull)
 			{ spellID = 109750, size = 52, unitId = "player", caster = "player", filter = "BUFF" },
-			-- Expansive Mind (Heart of Unliving)
-			{ spellID = 109813, size = 52, unitId = "player", caster = "player", filter = "BUFF" },
+			-- -- Expansive Mind (Heart of Unliving)
+			-- { spellID = 109813, size = 52, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Preternatural Evasion (Resolve of Undying)
 			{ spellID = 109782, size = 52, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Combat Mind (Will of Unbinding)
