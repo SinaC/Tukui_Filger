@@ -494,6 +494,73 @@ ns.Filger_Spells = {
 --		},
 --	},
 	["SHAMAN"] = {
+	{
+			Name = "SHORT_COOLDOWN",
+			Direction = "HORIZONTAL",
+			Interval = 1,
+			Mode = "ICON",
+			Opacity = 0.5,
+			Merge = true,
+			Filter = "CD",
+			Size = 37,
+			setPoint = { "LEFT", UIParent, "CENTER", 0, -40 },
+
+			-- Primal Strike
+			{ spellID = 73899 },
+			-- Shock (Earth: 8042, Flame: 8050, Frost: 8056)
+			{ spellID = 8050 },
+			-- Wind Shear
+			{ spellID = 57994 },
+			-- Chain Lightning
+			{ spellID = 421 },
+			-- Fire Nova
+			{ spellID = 1535 },
+			-- Lava Burst
+			{ spellID = 51505 },
+			-- Grounding Totem
+			{ spellID = 8177 },
+			-- Healing Rain
+			{ spellID = 73920 },
+			-- Unleash Elements
+			{ spellID = 73680 },
+			-- Stormstrike
+			{ spellID = 17364 },
+			-- Earthquake
+			{ spellID = 61882 },
+		},
+		{
+			Name = "COOLDOWN",
+			Direction = "UP",
+			Interval = 1,
+			Mode = "ICON",
+			Opacity = 1.0,
+			Merge = true,
+			Filter = "CD",
+			Size = 47,
+			--ForceSize = true,
+			setPoint = { "LEFT", UIParent, "CENTER", 198, -88 },
+
+			-- Nature's Swiftness
+			{ spellID = 16188 },
+			-- Tremor Totem
+			{ spellID = 8143 },
+			-- Earth Elemental Totem
+			{ spellID = 2062 },
+			-- Fire Elemental Totem
+			{ spellID = 2894 },
+			-- Spiritwalker's Grace
+			{ spellID = 79206 },
+			-- Mana Tide Totem
+			{ spellID = 16190 },
+			-- Spirit Link Totem
+			{ spellID = 98008 },
+			-- Feral Spirit
+			{ spellID = 51533 },
+			-- Shamanistic Rage
+			{ spellID = 30823 },
+			-- Elemental Mastery
+			{ spellID = 16166 },
+		},
 		{
 			-- Name = "P_PROC_ICON",
 			-- Direction = "LEFT",
@@ -523,54 +590,36 @@ ns.Filger_Spells = {
 			-- -- Sated
 			-- { spellID = 57724, size = 47, unitId = "player", caster = "player", filter = "DEBUFF" },
 		},
-		-- {
-			-- Name = "READY_FRAME",
-			-- Direction = "RIGHT",
-			-- Interval = 0,
-			-- Mode = "ICON",
-			-- setPoint = { "RIGHT", UIParent, "CENTER", 100, 180 },
-
-			-- -- Riptide/Springflut
-			-- { spellID = 61295, size = 47, filter = "READY" },
-			-- -- Bloodlust/Kampfrausch
-			-- { spellID = 2825, size = 47, filter = "READY" },
-		-- },
 		{
-			-- Name = "COOLDOWN",
-			-- Direction = "UP",
-			-- IconSide = "RIGHT",
-			-- Interval = 0,
-			-- Mode = "BAR",
-			-- setPoint = { "RIGHT", UIParent, "CENTER", -294, 200 },
-			Name = "COOLDOWN",
-			Direction = "HORIZONTAL",
+			-- Name = "P_BUFF_ICON",
+			-- Direction = "LEFT",
+			-- Interval = 4,
+			-- Mode = "ICON",
+			-- setPoint = { "RIGHT", UIParent, "CENTER", -198, -146 },
+			Name = "P_BUFF_ICON",
+			Direction = "LEFT",
 			Interval = 1,
+			Opacity = 0.8,
 			Mode = "ICON",
-			Opacity = 0.5,
-			setPoint = { "LEFT", UIParent, "CENTER", 0, -40 },
+			Merge = true,
+			Size = 37,
+			Filter = "BUFF",
+			UnitId = "player",
+			setPoint = { "RIGHT", UIParent, "CENTER", -148, 0 },
 
-			-- Nature Swiftness
-			{ spellID = 16188, size = 32, barWidth = 200, filter = "CD" },
-			-- Riptide/Springflut
-			--{ spellID = 61295, size = 32, trigger = "BUFF", barWidth = 200, duration = 50, filter = "ICD" },
-			--{ spellID = 61295, size = 32, barWidth = 200, filter = "CD" },
+			-- -- Earth Shield/Erdschild
+			-- { spellID = 974, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
+			-- -- Riptide/Springflut
+			-- { spellID = 61295, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
+			-- -- Lightning Shield/Blitzschlagschild
+			-- { spellID = 324, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
+			-- -- Water Shield/Wasserschild
+			-- { spellID = 52127, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
+			-- Maelstrom Weapon
+			{ spellID = 51528, caster = "player" },
+			-- Spiritwalker's Grace
+			{ spellID = 79206, caster = "player" },
 		},
---		{
---			Name = "P_BUFF_ICON",
---			Direction = "LEFT",
---			Interval = 4,
---			Mode = "ICON",
---			setPoint = { "RIGHT", UIParent, "CENTER", -198, -146 },
---
---			-- Earth Shield/Erdschild
---			{ spellID = 974, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Riptide/Springflut
---			{ spellID = 61295, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Lightning Shield/Blitzschlagschild
---			{ spellID = 324, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Water Shield/Wasserschild
---			{ spellID = 52127, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
---		},
 --		{
 --			Name = "T_BUFF_ICON",
 --			Direction = "RIGHT",
@@ -607,12 +656,12 @@ ns.Filger_Spells = {
 			Name = "F/DEBUFF_BAR",
 			Direction = "UP",
 			IconSide = "LEFT",
-			Interval = 4,
-			Mode = "BAR",
-			setPoint = { "LEFT", UIParent, "CENTER", 198, 100 },
+			Interval = 1,
+			Mode = "ICON",
+			setPoint = { "LEFT", UIParent, "CENTER", 148, 100 },
 
 			-- Hex
-			{ spellID = 51514, size = 32, barWidth = 200, unitId = "focus", caster = "all", filter = "DEBUFF" },
+			{ spellID = 51514, size = 32, unitId = "focus", caster = "all", filter = "DEBUFF" },
 		},
 	},
 	["PALADIN"] = {
@@ -755,127 +804,192 @@ ns.Filger_Spells = {
 			-- { spellID = 31884, size = 32, barWidth = 200, filter = "CD" },
 		-- },
 	},
---	["PRIEST"] = {
---		{
---			Name = "P_BUFF_ICON",
---			Direction = "LEFT",
---			Interval = 4,
---			Mode = "ICON",
---			setPoint = { "RIGHT", UIParent, "CENTER", -198, -146 },
---
---			-- Prayer of Mending/Gebet der Besserung
---			{ spellID = 41635, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Guardian Spirit/Schutzgeist
---			{ spellID = 47788, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Pain Suppression/Schmerzunterdrückung
---			{ spellID = 33206, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Power Word: Shield/Machtwort: Schild
---			{ spellID = 17, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Renew/Erneuerung
---			{ spellID = 139, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Fade/Verblassen
---			{ spellID = 586, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Fear Ward/Furchtzauberschutz
---			{ spellID = 6346, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Inner Fire/Inneres Feuer
---			{ spellID = 588, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Innerer Wille
---			{ spellID = 73413, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Erzengel
---			{ spellID = 81700, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Dunkler Erzengel
---			{ spellID = 87153, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Machterfüllte Schatten
---			{ spellID = 95799, size = 32, unitId = "player", caster = "player", filter = "BUFF" },
---		},
---		{
---			Name = "T_BUFF_ICON",
---			Direction = "RIGHT",
---			Interval = 4,
---			Mode = "ICON",
---			setPoint = { "LEFT", UIParent, "CENTER", 198, -146 },
---
---			-- Prayer of Mending/Gebet der Besserung
---			{ spellID = 41635, size = 32, unitId = "target", caster = "player", filter = "BUFF" },
---			-- Guardian Spirit/Schutzgeist
---			{ spellID = 47788, size = 32, unitId = "target", caster = "player", filter = "BUFF" },
---			-- Pain Suppression/Schmerzunterdrückung
---			{ spellID = 33206, size = 32, unitId = "target", caster = "player", filter = "BUFF" },
---			-- Power Word: Shield/Machtwort: Schild
---			{ spellID = 17, size = 32, unitId = "target", caster = "player", filter = "BUFF" },
---			-- Renew/Erneuerung
---			{ spellID = 139, size = 32, unitId = "target", caster = "player", filter = "BUFF" },
---			-- Fear Ward/Furchtzauberschutz
---			{ spellID = 6346, size = 32, unitId = "target", caster = "player", filter = "BUFF" },
---			-- Echo des lichts
---			{ spellID = 77489, size = 32, unitId = "target", caster = "player", filter = "BUFF" },
---			-- Inspiration
---			{ spellID = 15357, size = 32, unitId = "target", caster = "player", filter = "BUFF" },
---			-- Barmherzigkeit
---			{ spellID = 77613, size = 32, unitId = "target", caster = "player", filter = "BUFF" },
---		},
---		{
---			Name = "P_PROC_ICON",
---			Direction = "LEFT",
---			Interval = 4,
---			Mode = "ICON",
---			setPoint = { "RIGHT", UIParent, "CENTER", -198, -190 },
---
---			-- Surge of Light / Woge des Lichts
---			{ spellID = 88688, size = 47, unitId = "player", caster = "all", filter = "BUFF" },
---			-- Serendipity / Glücksfall
---			{ spellID = 63735, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Shadow Orb
---			{ spellID = 77487, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
---			-- dunkler prediger
---			{ spellID = 87118, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Evangelism / Prediger
---			{ spellID = 81661, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Dispersion
---			{ spellID = 47585, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Chakra: Epiphani
---			{ spellID = 81208, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Chakre: Refugium
---			{ spellID = 81206, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Gesang des Herzens
---			{ spellID = 74224, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Läuternde Tränen
---			{ spellID = 91139, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
---			-- Dunkles Glühen
---			{ spellID = 75173, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
---		},
---		{
---			Name = "T_DEBUFF_ICON",
---			Direction = "RIGHT",
---			Interval = 4,
---			Mode = "ICON",
---			setPoint = { "LEFT", UIParent, "CENTER", 198, -190 },
---
---			-- Shackle undead
---			{ spellID = 9484, size = 47, unitId = "target", caster = "all", filter = "DEBUFF" },
---			-- Psychic Scream
---			{ spellID = 8122, size = 47, unitId = "target", caster = "all", filter = "DEBUFF" },
---			-- Shadow Word: Pain
---			{ spellID = 589, size = 47, unitId = "target", caster = "player", filter = "DEBUFF" },
---			-- Devouring Plague
---			{ spellID = 2944, size = 47, unitId = "target", caster = "player", filter = "DEBUFF" },
---			-- Vampiric Touch
---			{ spellID = 34914, size = 47, unitId = "target", caster = "player", filter = "DEBUFF" },
---		},
---		{
---			Name = "F/DEBUFF_BAR",
---			Direction = "UP",
---			IconSide = "LEFT",
---			Interval = 4,
---			Mode = "BAR",
---			setPoint = { "LEFT", UIParent, "CENTER", 198, 100 },
---
---			-- Shackle undead
---			{ spellID = 9484, size = 32, barWidth = 200, unitId = "focus", caster = "all", filter = "DEBUFF" },
---			-- Psychic Scream
---			{ spellID = 8122, size = 32, barWidth = 200, unitId = "focus", caster = "all", filter = "DEBUFF" },
---		},
---	},
+	["PRIEST"] = {
+		{
+			Name = "SHORT_COOLDOWN",
+			Direction = "HORIZONTAL",
+			Interval = 1,
+			Mode = "ICON",
+			Opacity = 0.5,
+			Merge = true,
+			Filter = "CD",
+			Size = 37,
+			setPoint = { "LEFT", UIParent, "CENTER", 0, -40 },
+
+			-- Holy Fire
+			{ spellID = 14914 },
+			-- Mind Blast
+			{ spellID = 8092 },
+			-- Shadow Word: Death
+			{ spellID = 32379 },
+			-- Penance
+			{ spellID = 47540 },
+			-- Archangel/Erzengel
+			{ spellID = 81700 },
+		},
+		{
+			Name = "COOLDOWN",
+			Direction = "UP",
+			Interval = 1,
+			Mode = "ICON",
+			Opacity = 1.0,
+			Merge = true,
+			Filter = "CD",
+			Size = 47,
+			--ForceSize = true,
+			setPoint = { "LEFT", UIParent, "CENTER", 198, -88 },
+
+			-- Psychic Scream
+			{ spellID = 8122 },
+			-- Fade
+			{ spellID = 586 },
+			-- Fear Ward
+			{ spellID = 6346 },
+			-- Hymn of Hope
+			{ spellID = 64901 },
+			-- Shadow Fiend
+			{ spellID = 34433 },
+			-- Divine Hymn
+			{ spellID = 64843 },
+			-- Leap of Faith
+			{ spellID = 73325 },
+			-- Power Word: Barrier
+			{ spellID = 62618 },
+			-- Inner Focus
+			{ spellID = 89485 },
+			-- Power Infusion
+			{ spellID = 10060 },
+			-- Light Well
+			{ spellID = 724 },
+			-- Desperate Prayer
+			{ spellID = 19236 },
+			-- Silence
+			{ spellID = 15487 },
+			-- Dispersion
+			{ spellID = 47585 },
+			-- Psychic Horror
+			{ spellID = 64044 },
+		},
+		{
+			-- Name = "P_BUFF_ICON",
+			-- Direction = "LEFT",
+			-- Interval = 4,
+			-- Mode = "ICON",
+			-- setPoint = { "RIGHT", UIParent, "CENTER", -198, -146 },
+			Name = "P_BUFF_ICON",
+			Direction = "LEFT",
+			Interval = 1,
+			Opacity = 0.8,
+			Mode = "ICON",
+			Merge = true,
+			Size = 37,
+			Filter = "BUFF",
+			UnitId = "player",
+			setPoint = { "RIGHT", UIParent, "CENTER", -148, 0 },
+
+			-- Archangel/Erzengel
+			{ spellID = 81700 },
+		},
+		-- {
+			-- Name = "T_BUFF_ICON",
+			-- Direction = "RIGHT",
+			-- Interval = 4,
+			-- Mode = "ICON",
+			-- setPoint = { "LEFT", UIParent, "CENTER", 198, -146 },
+
+			-- -- Prayer of Mending/Gebet der Besserung
+			-- { spellID = 41635, size = 32, unitId = "target", caster = "player", filter = "BUFF" },
+			-- -- Guardian Spirit/Schutzgeist
+			-- { spellID = 47788, size = 32, unitId = "target", caster = "player", filter = "BUFF" },
+			-- -- Pain Suppression/Schmerzunterdrückung
+			-- { spellID = 33206, size = 32, unitId = "target", caster = "player", filter = "BUFF" },
+			-- -- Power Word: Shield/Machtwort: Schild
+			-- { spellID = 17, size = 32, unitId = "target", caster = "player", filter = "BUFF" },
+			-- -- Renew/Erneuerung
+			-- { spellID = 139, size = 32, unitId = "target", caster = "player", filter = "BUFF" },
+			-- -- Fear Ward/Furchtzauberschutz
+			-- { spellID = 6346, size = 32, unitId = "target", caster = "player", filter = "BUFF" },
+			-- -- Echo des lichts
+			-- { spellID = 77489, size = 32, unitId = "target", caster = "player", filter = "BUFF" },
+			-- -- Inspiration
+			-- { spellID = 15357, size = 32, unitId = "target", caster = "player", filter = "BUFF" },
+			-- -- Barmherzigkeit
+			-- { spellID = 77613, size = 32, unitId = "target", caster = "player", filter = "BUFF" },
+		-- },
+		{
+			-- Name = "P_PROC_ICON",
+			-- Direction = "LEFT",
+			-- Interval = 4,
+			-- Mode = "ICON",
+			-- setPoint = { "RIGHT", UIParent, "CENTER", -198, -190 },
+			Name = "P_PROC_ICON",
+			Direction = "HORIZONTAL",
+			Interval = 1,
+			Mode = "ICON",
+			Opacity = 0.5,
+			Merge = true,
+			setPoint = { "LEFT", UIParent, "CENTER", 0, 210 },
+
+			-- Surge of Light / Woge des Lichts
+			{ spellID = 88688, size = 47, unitId = "player", caster = "all", filter = "BUFF" },
+			-- Serendipity / Glücksfall
+			{ spellID = 63735, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
+			-- Shadow Orb
+			{ spellID = 77487, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
+			-- Dark Evangelism / dunkler prediger
+			{ spellID = 87118, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
+			-- Evangelism / Prediger
+			{ spellID = 81661, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
+			-- Dispersion
+			{ spellID = 47585, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
+			-- Chakra: Epiphani
+			{ spellID = 81208, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
+			-- Chakra: Refugium
+			{ spellID = 81206, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
+		},
+		{
+			-- Name = "T_DEBUFF_ICON",
+			-- Direction = "RIGHT",
+			-- Interval = 4,
+			-- Mode = "ICON",
+			-- setPoint = { "LEFT", UIParent, "CENTER", 198, -190 },
+			Name = "T_DEBUFF_ICON",
+			Direction = "RIGHT",
+			Interval = 1,
+			Mode = "ICON",
+			setPoint = { "LEFT", UIParent, "CENTER", 37, -88 },
+
+			-- Shackle undead
+			{ spellID = 9484, size = 47, unitId = "target", caster = "all", filter = "DEBUFF" },
+			-- Psychic Scream
+			{ spellID = 8122, size = 47, unitId = "target", caster = "all", filter = "DEBUFF" },
+			-- Shadow Word: Pain
+			{ spellID = 589, size = 47, unitId = "target", caster = "player", spec = 3, filter = "DEBUFF" },
+			-- Devouring Plague
+			{ spellID = 2944, size = 47, unitId = "target", caster = "player", spec = 3, filter = "DEBUFF" },
+			-- Vampiric Touch
+			{ spellID = 34914, size = 47, unitId = "target", caster = "player", spec = 3, filter = "DEBUFF" },
+		},
+		{
+			-- Name = "F/DEBUFF_BAR",
+			-- Direction = "UP",
+			-- IconSide = "LEFT",
+			-- Interval = 4,
+			-- Mode = "BAR",
+			-- setPoint = { "LEFT", UIParent, "CENTER", 198, 100 },
+			Name = "F/DEBUFF_BAR",
+			Direction = "UP",
+			IconSide = "LEFT",
+			Interval = 1,
+			Mode = "ICON",
+			setPoint = { "LEFT", UIParent, "CENTER", 148, 100 },
+
+			-- Shackle undead
+			{ spellID = 9484, size = 32, barWidth = 200, unitId = "focus", caster = "all", filter = "DEBUFF" },
+			-- Psychic Scream
+			{ spellID = 8122, size = 32, barWidth = 200, unitId = "focus", caster = "all", filter = "DEBUFF" },
+		},
+	},
    ["WARLOCK"] = {
 		{
 			Name = "P_PROC_ICON",
@@ -1240,6 +1354,7 @@ ns.Filger_Spells = {
 			-- { spellID = 96907, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
 			-- -- Core of ripeness - Expansive Soul
 			-- { spellID = 91155, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
+
 			-- 333/346
 			-- Cleansing Tears (Tear of Blood)
 			{ spellID = 91139, size = 52, unitId = "player", caster = "player", filter = "BUFF" },
