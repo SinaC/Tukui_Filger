@@ -489,20 +489,21 @@ if Filger_Spells and Filger_Spells[T.myclass] then
 			end
 			Filger.DisplayActives(frame)
 		else
-			local CDFound = false
-			local focusFound = false
-			local targetFound = false
-			for j = 1, #Filger_Spells[T.myclass][i], 1 do
-				local data = Filger_Spells[T.myclass][i][j]
-				if data.filter == "CD" then
-					CDFound = true
-				elseif data.unitID == "target" then
-					targetFound = true
-				elseif data.unitID == "focus" then
-					focusFound = true
-				end
-			end
-			if CDFound then frame:RegisterEvent("SPELL_UPDATE_COOLDOWN") end
+			-- local CDFound = false
+			-- local focusFound = false
+			-- local targetFound = false
+			-- for j = 1, #Filger_Spells[T.myclass][i], 1 do
+				-- local data = Filger_Spells[T.myclass][i][j]
+				-- if data.filter == "CD" then
+					-- CDFound = true
+				-- elseif data.unitID == "target" then
+					-- targetFound = true
+				-- elseif data.unitID == "focus" then
+					-- focusFound = true
+				-- end
+			-- end
+			--if CDFound then frame:RegisterEvent("SPELL_UPDATE_COOLDOWN") end
+			frame:RegisterEvent("SPELL_UPDATE_COOLDOWN")
 			frame:RegisterEvent("PLAYER_TARGET_CHANGED")--if targetFound then frame:RegisterEvent("PLAYER_TARGET_CHANGED") end
 			frame:RegisterEvent("PLAYER_FOCUS_CHANGED")--if focusFound then frame:RegisterEvent("PLAYER_FOCUS_CHANGED") end
 			frame:RegisterEvent("UNIT_AURA")
