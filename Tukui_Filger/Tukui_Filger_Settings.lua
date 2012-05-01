@@ -923,12 +923,14 @@ ns.Filger_Spells = {
 			-- Mode = "ICON",
 			-- setPoint = { "RIGHT", UIParent, "CENTER", -198, -190 },
 			Name = "P_PROC_ICON",
-			Direction = "HORIZONTAL",
+			--Direction = "HORIZONTAL",
+			Direction = "UP",
 			Interval = 1,
 			Mode = "ICON",
 			Opacity = 0.5,
 			Merge = true,
-			setPoint = { "LEFT", UIParent, "CENTER", 0, 210 },
+			--setPoint = { "LEFT", UIParent, "CENTER", 0, 210 },
+			setPoint = { "RIGHT", UIParent, "CENTER", -148, 48 },
 
 			-- Surge of Light / Woge des Lichts
 			{ spellID = 88688, size = 47, unitId = "player", caster = "all", filter = "BUFF" },
