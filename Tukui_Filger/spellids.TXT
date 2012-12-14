@@ -1,0 +1,63 @@
+DRUID
+
+Predatory Swiftness: 16974 BUFF(proc)
+Mangle: 33878 CD(short)
+Nature's Cure: 88423 CD(short)
+Skull Bash: 106839 CD(short)+DEBUFF
+Starsurge: 78674 CD(short)
+Wild Mushroom:Bloom : 102791 CD(short)
+Wild Mushroom:Detonate: 88751 CD(short)
+Typhoon: 132469 CD(short)
+Wild Charge: 102401 CD(short)
+Growl: 6795 CD(short)
+Maul: 6807 CD(short)
+Swipe: 779 CD(short, bear)
+Trash: 77758 CD(short, bear)+DEBUFF
+Lacerate: 33745 CD(short)+DEBUFF
+Maim: 22570 CD(short)+DEBUFF
+Bear Hug: 102795 CD+DEBUFF
+Tranquility: 740 CD
+Berserk: 106952 CD+BUFF
+Celestial Alignment: 112071 CD+BUFF
+Enrage: 5229 CD+BUFF
+Ironbark: 102342 CD+BUFF
+Savage Roar: 52610 BUFF
+Rip: 1079 DEBUFF
+Owlkin Frenzy: 48393 BUFF
+Solar Beam: 78675 CD+BUFF
+Starfall: 48505 CD+BUFF
+Survival Instincts: 61336 CD+BUFF
+Tiger's Fury: 5217 CD+BUFF
+Cenarion Ward: 102351 CD
+Disorienting Roar: 99 CD
+Displacer Beast: 102280 CD
+Dream of Cenarius: 108373 BUFF
+Force of Nature: 106737 CD
+Heart of the Wild: 108288 CD+BUFF
+Incarnation: 106731 CD+BUFF
+Mass Entanglement: 102359 CD
+Mighty Bash: 5211 CD+DEBUFF
+Nature's Swiftness: 132158 CD
+Nature's Vigil: 124974 CD+BUFF
+Renewal: 108238 CD
+Ursol's Vortex: 102793 CD
+Moonfire: 8921 DEBUFF
+Entangling roots: 339 DEBUFF(target+focus)
+Clearcasting: 16870 BUFF(proc)
+Rake: 1822 DEBUFF
+Dash: 1850 CD+BUFF
+Thrash: 106830 DEBUFF(cat)
+Pounce: 102546 DEBUFF **
+Pounce: 9005 DEBUFF **
+Barkskin: 22812 CD+BUFF
+Nature's Grasp: 16689 CD+BUFF
+Innervate: 29166 CD+BUFF
+Rebirth: 20484 CD
+Hibernate: 2637 DEBUFF(target+focus)
+Might of Ursoc: 106922 CD+BUFF
+Cyclone: 33786 DEBUFF(target+focus)
+Stampeding Roar: 77764+77761+106898 CD+BUFF
+
+ABANDONNED
+Savage Defense: 62606 CD(short same as GCD???)+BUFF
+Frenzied Regeneration: 22842 CD(short same as GCD)

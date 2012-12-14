@@ -22,6 +22,47 @@ local _, ns = ...
 local Filger_Spells = ns.Filger_Spells
 local Filger = {}
 
+------------------------------------------------------------
+-- Flash functions
+------------------------------------------------------------
+
+local function StartFlash(self, duration)
+	if not self.anim then
+		self.anim = self:CreateAnimationGroup("Flash")
+		
+		self.anim.fadein = self.anim:CreateAnimation("ALPHA", "FadeIn")
+		self.anim.fadein:SetChange(1)
+		self.anim.fadein:SetOrder(2)
+
+		self.anim.fadeout = self.anim:CreateAnimation("ALPHA", "FadeOut")
+		self.anim.fadeout:SetChange(-1)
+		self.anim.fadeout:SetOrder(1)
+	end
+
+	self.anim.fadein:SetDuration(duration)
+	self.anim.fadeout:SetDuration(duration)
+	self.anim:Play()
+end
+
+local function StopFlash(self)
+	if self.anim then
+		self.anim:Finish()
+	end
+end
+
+function Filger:Flash()
+	local time = self.value.start + self.value.duration - GetTime()
+
+	if time < 0 then
+		StopFlash(self)
+	end
+
+	if time < ns.Filger_Settings.flashThreshold then
+		StartFlash(self, ns.Filger_Settings.flashDuration)
+	end
+end
+
+
 function Filger:UnitBuff(unitID, inSpellID, spn, absID)
 --print("UnitBuff:"..tostring(unitID).."  "..tostring(inSpellID).."  "..tostring(spn).."  "..tostring(absID))
 	if absID then
@@ -64,6 +105,10 @@ function Filger:UpdateCD(elapsed)
 		self:SetScript("OnUpdate", nil)
 		Filger.DisplayActives(frame)
 	end
+
+	if ns.Filger_Settings.flash then
+		Filger.Flash(self)
+	end
 end
 
 function Filger:DisplayActives()
@@ -86,7 +131,7 @@ function Filger:DisplayActives()
 			aura:SetTemplate("Default")
 			-- anchor
 			if index == 1 then
-				aura:Point(unpack(self.setPoint))
+				aura:Point(unpack(self.Anchor))
 			else
 				if self.Direction == "UP" then
 					aura:Point("BOTTOM", previous, "TOP", 0, self.Interval)
@@ -221,7 +266,7 @@ function Filger:DisplayActives()
 		-- Compute total width
 		totalWidth = totalWidth - self.Interval -- remove last interval
 		-- Get base position
-		local point, relativeFrame, relativePoint, offsetX, offsetY = unpack(self.setPoint)
+		local point, relativeFrame, relativePoint, offsetX, offsetY = unpack(self.Anchor)
 		-- Update x-offset: remove half the total width
 		offsetX = offsetX - (totalWidth / 2)
 		-- Set position
@@ -241,12 +286,14 @@ function Filger:OnEvent(event, unit)
 -- print("PLAYER_TARGET_CHANGED")
 -- end
 	if event == "SPELL_UPDATE_COOLDOWN" or event == "PLAYER_TARGET_CHANGED" or event == "PLAYER_FOCUS_CHANGED" or event == "PLAYER_ENTERING_WORLD" or event == "UNIT_AURA" and (unit == "target" or unit == "player" or unit == "pet" or unit == "focus") then
-		local ptt = GetPrimaryTalentTree()
+		--local ptt = GetPrimaryTalentTree()
+		local spec = GetSpecialization() -- MoP
 		local needUpdate = false
 		local id = self.Id
 		for i = 1, #Filger_Spells[T.myclass][id], 1 do
 			local data = Filger_Spells[T.myclass][id][i]
-			if not data.spec or data.spec == ptt then
+			--if not data.spec or data.spec == ptt then
+			if not data.spec or data.spec == spec then -- MoP
 				local found = false
 				local name, icon, count, duration, start
 				if data.filter == "BUFF" then
@@ -451,10 +498,10 @@ if Filger_Spells and Filger_Spells[T.myclass] then
 		frame.IconSide = data.IconSide or "LEFT"
 		frame.Interval = data.Interval or 3
 		frame.Mode = data.Mode or "ICON"
-		frame.setPoint = data.setPoint or "CENTER"
+		frame.Anchor = data.Anchor or "CENTER"
 		frame:Width(Filger_Spells[T.myclass][i][1] and Filger_Spells[T.myclass][i][1].size or 100)
 		frame:Height(Filger_Spells[T.myclass][i][1] and Filger_Spells[T.myclass][i][1].size or 20)
-		frame:Point(unpack(data.setPoint))
+		frame:Point(unpack(data.Anchor))
 		frame:SetAlpha(data.Opacity or 1.0)
 
 		---- Set size to each spell in spell-list if specified
@@ -472,7 +519,7 @@ if Filger_Spells and Filger_Spells[T.myclass] then
 			if data.UnitId and not spell.UnitId then spell.unitId = data.UnitId end
 		end
 
-		if ns.Filger_Settings.configmode then
+		if ns.Filger_Settings.configMode then
 			frame.actives = {}
 			for j = 1, math.min(4,#Filger_Spells[T.myclass][i]), 1 do
 				local data = Filger_Spells[T.myclass][i][j]
