@@ -290,8 +290,8 @@ function Filger:OnEvent(event, unit)
 		local spec = GetSpecialization() -- MoP
 		local needUpdate = false
 		local id = self.Id
-		for i = 1, #Filger_Spells[T.myclass][id], 1 do
-			local data = Filger_Spells[T.myclass][id][i]
+		for i = 1, #Filger_Spells[T.MyClass][id], 1 do
+			local data = Filger_Spells[T.MyClass][id][i]
 			--if not data.spec or data.spec == ptt then
 			if not data.spec or data.spec == spec then -- MoP
 				local found = false
@@ -408,8 +408,8 @@ end
 -- Build final spell-list
 if Filger_Spells and Filger_Spells["ALL"] then
 	-- add spell-list found in section ALL to class-specific section
-	if not Filger_Spells[T.myclass] then
-		Filger_Spells[T.myclass] = {}
+	if not Filger_Spells[T.MyClass] then
+		Filger_Spells[T.MyClass] = {}
 	end
 
 	for i = 1, #Filger_Spells["ALL"], 1 do
@@ -417,8 +417,8 @@ if Filger_Spells and Filger_Spells["ALL"] then
 		local merge = false
 		local spellListAll = Filger_Spells["ALL"][i]
 		local spellListClass = nil
-		for j = 1, #Filger_Spells[T.myclass], 1 do
-			spellListClass = Filger_Spells[T.myclass][j]
+		for j = 1, #Filger_Spells[T.MyClass], 1 do
+			spellListClass = Filger_Spells[T.MyClass][j]
 			local mergeAll = spellListAll.Merge or false
 			local mergeClass = spellListClass.Merge or false
 			if spellListClass.Name == spellListAll.Name and (mergeAll or mergeClass) then
@@ -428,7 +428,7 @@ if Filger_Spells and Filger_Spells["ALL"] then
 		end
 		if not merge or not spellListClass then
 			-- add another spell-list
-			table.insert(Filger_Spells[T.myclass], Filger_Spells["ALL"][i])
+			table.insert(Filger_Spells[T.MyClass], Filger_Spells["ALL"][i])
 		else
 			-- merge spell-list but class-specific position, direction, ...
 			--DEFAULT_CHAT_FRAME:AddMessage("FILGER: MERGING SPELLS FROM "..spellListAll.Name)
@@ -439,18 +439,18 @@ if Filger_Spells and Filger_Spells["ALL"] then
 	end
 end
 
-if Filger_Spells and Filger_Spells[T.myclass] then
+if Filger_Spells and Filger_Spells[T.MyClass] then
 	-- remove non-class specific spell-list
 	for index in pairs(Filger_Spells) do
-		if index ~= T.myclass then
+		if index ~= T.MyClass then
 			Filger_Spells[index] = nil
 		end
 	end
 	-- remove invalid/disabled spell
 	local idx = {}
-	for i = 1, #Filger_Spells[T.myclass], 1 do
+	for i = 1, #Filger_Spells[T.MyClass], 1 do
 		local jdx = {}
-		local data = Filger_Spells[T.myclass][i]
+		local data = Filger_Spells[T.MyClass][i]
 
 		if data.Enabled == false then
 			print("Filger: Disabled section -> "..data.Name)
@@ -484,12 +484,12 @@ if Filger_Spells and Filger_Spells[T.myclass] then
 		end
 	end
 	for _, v in ipairs(idx) do
-		table.remove(Filger_Spells[T.myclass], v)
+		table.remove(Filger_Spells[T.MyClass], v)
 	end
 
 	-- create frame for each spell-list
-	for i = 1, #Filger_Spells[T.myclass], 1 do
-		local data = Filger_Spells[T.myclass][i]
+	for i = 1, #Filger_Spells[T.MyClass], 1 do
+		local data = Filger_Spells[T.MyClass][i]
 		local frame = CreateFrame("Frame", "FilgerFrame"..i.."_"..data.Name, UIParent)
 --print("FRAME CREATED:"..tostring(frame).."  "..tostring(frame:GetName()).."  "..tostring(Filger))
 		frame.Id = i
@@ -499,21 +499,21 @@ if Filger_Spells and Filger_Spells[T.myclass] then
 		frame.Interval = data.Interval or 3
 		frame.Mode = data.Mode or "ICON"
 		frame.Anchor = data.Anchor or "CENTER"
-		frame:Width(Filger_Spells[T.myclass][i][1] and Filger_Spells[T.myclass][i][1].size or 100)
-		frame:Height(Filger_Spells[T.myclass][i][1] and Filger_Spells[T.myclass][i][1].size or 20)
+		frame:Width(Filger_Spells[T.MyClass][i][1] and Filger_Spells[T.MyClass][i][1].size or 100)
+		frame:Height(Filger_Spells[T.MyClass][i][1] and Filger_Spells[T.MyClass][i][1].size or 20)
 		frame:Point(unpack(data.Anchor))
 		frame:SetAlpha(data.Opacity or 1.0)
 
 		---- Set size to each spell in spell-list if specified
 		-- if data.Size then
 			-- for j = 1, #data, 1 do
-				-- local spell = Filger_Spells[T.myclass][i][j]
+				-- local spell = Filger_Spells[T.MyClass][i][j]
 				-- spell.size = data.Size
 			-- end
 		-- end
 		-- Set default value (Size, Filter and UnitId) to each spell in spell-list
 			for j = 1, #data, 1 do
-				local spell = Filger_Spells[T.myclass][i][j]
+				local spell = Filger_Spells[T.MyClass][i][j]
 			if data.Size and (ForceSize or not spell.size) then spell.size = data.Size end
 			if data.Filter and not spell.filter then spell.filter = data.Filter end
 			if data.UnitId and not spell.UnitId then spell.unitId = data.UnitId end
@@ -521,8 +521,8 @@ if Filger_Spells and Filger_Spells[T.myclass] then
 
 		if ns.Filger_Settings.configMode then
 			frame.actives = {}
-			for j = 1, math.min(4,#Filger_Spells[T.myclass][i]), 1 do
-				local data = Filger_Spells[T.myclass][i][j]
+			for j = 1, math.min(4,#Filger_Spells[T.MyClass][i]), 1 do
+				local data = Filger_Spells[T.MyClass][i][j]
 				local name, icon
 				if data.spellID then
 					name, _, icon = GetSpellInfo(data.spellID)
@@ -539,8 +539,8 @@ if Filger_Spells and Filger_Spells[T.myclass] then
 			-- local CDFound = false
 			-- local focusFound = false
 			-- local targetFound = false
-			-- for j = 1, #Filger_Spells[T.myclass][i], 1 do
-				-- local data = Filger_Spells[T.myclass][i][j]
+			-- for j = 1, #Filger_Spells[T.MyClass][i], 1 do
+				-- local data = Filger_Spells[T.MyClass][i][j]
 				-- if data.filter == "CD" then
 					-- CDFound = true
 				-- elseif data.unitID == "target" then
