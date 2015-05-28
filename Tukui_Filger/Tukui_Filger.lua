@@ -165,7 +165,7 @@ function Filger:DisplayActives()
 				aura.count = _G[aura.count:GetName()]
 			else
 				aura.count = aura:CreateFontString("$parentCount", "OVERLAY")
-				aura.count:SetFont(C["media"].uffont, 14, "OUTLINE")
+				aura.count:SetFont(C.Medias.Font, 14, "OUTLINE")
 				aura.count:Point("BOTTOMRIGHT", 1, -1)
 				aura.count:SetJustifyH("CENTER")
 			end

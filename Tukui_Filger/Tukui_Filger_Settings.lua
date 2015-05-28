@@ -40,25 +40,25 @@ ns.Filger_Spells = {
 			-- Skull Bash
 			{ spellID = 106839 },
 			-- Mangle (Bear)
-			{ spellID = 33878 },
+			--{ spellID = 33878 },
 			-- Growl
 			{ spellID = 6795 },
 			-- Trash
 			{ spellID = 77758 },
 			-- Swipe (Bear)
-			{ spellID = 779 },
+			--{ spellID = 779 },
 			-- Wild Charge
 			{ spellID = 102401 },
 			-- Maul
 			{ spellID = 6807 },
 			-- Nature's Cure
-			{ spellID = 88423 },
+			-- { spellID = 88423 },
 			-- Starsurge
 			{ spellID = 78674 },
 			-- Wild Mushroom: Bloom
-			{ spellID = 102791 },
+			--{ spellID = 102791 },
 			-- Wild Mushroom: Detonate
-			{ spellID = 88751 },
+			--{ spellID = 88751 },
 			-- Typhoon
 			{ spellID = 132469 },
 			-- Lacerate
@@ -81,11 +81,11 @@ ns.Filger_Spells = {
 			-- Nature's Swiftness
 			{ spellID = 132158 },
 			-- Innervate
-			{ spellID = 29166 },
+			--{ spellID = 29166 },
 			-- Barkskin
 			{ spellID = 22812 },
 			-- Incarnation
-			{ spellID = 106731 },
+			--{ spellID = 106731 },
 			-- Tranquility
 			{ spellID = 740 },
 			-- Berserk
@@ -95,7 +95,7 @@ ns.Filger_Spells = {
 			-- Survival Instincts
 			{ spellID = 61336 },
 			-- Enrage
-			{ spellID = 5229 },
+			--{ spellID = 5229 },
 			-- Dash
 			{ spellID = 1850 },
 			-- Stampeding Roar
@@ -109,7 +109,7 @@ ns.Filger_Spells = {
 			-- Mighty Bash
 			{ spellID = 5211 },
 			-- Bear Hug
-			{ spellID = 102795 },
+			--{ spellID = 102795 },
 			-- Celestial Alignment
 			{ spellID = 112071 },
 			-- Ironbark: 102342 --> not needed, already on heal interface
@@ -123,9 +123,9 @@ ns.Filger_Spells = {
 			-- Displacer Beast
 			{ spellID = 102280 },
 			-- Force of Nature
-			{ spellID = 106737 },
+			--{ spellID = 106737 },
 			-- Heart of the Wild
-			{ spellID = 108288 },
+			--{ spellID = 108288 },
 			-- Mass Entanglement
 			{ spellID = 102359 },
 			-- Nature's Vigil
@@ -135,13 +135,15 @@ ns.Filger_Spells = {
 			-- Ursol's Vortex
 			{ spellID = 102793 },
 			-- Nature's Grasp
-			{ spellID = 16689 },
+			--{ spellID = 16689 },
 			-- Rebirth: 20484 --> not needed, already on heal interface
 			-- Might of Ursoc
-			{ spellID = 106922 },
+			--{ spellID = 106922 },
+			-- Incarnation - Tree of life
+			{ spellID = 33891 },
 
 			-- Nature's Grace
-			{ spellID = 16886, filter = "ICD", trigger = "BUFF", duration = 60 },
+			--{ spellID = 16886, filter = "ICD", trigger = "BUFF", duration = 60 },
 		},
 		{
 			Name = "PLAYER_PROC",
@@ -153,9 +155,9 @@ ns.Filger_Spells = {
 			Anchor = { "LEFT", UIParent, "CENTER", 0, 210 },
 
 			-- Eclipse (Lunar)/Mondfinsternis
-			{ spellID = 48518, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
+			--{ spellID = 48518, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Eclipse (Solar)/Sonnenfinsternis
-			{ spellID = 48517, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
+			--{ spellID = 48517, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Shooting Stars/Sternschnuppen
 			{ spellID = 93400, size = 47, unitId = "player", caster = "player", filter = "BUFF" },
 			-- Clearcasting/Freizaubern
@@ -183,27 +185,29 @@ ns.Filger_Spells = {
 			-- Barkskin/Baumrinde
 			{ spellID = 22812, caster = "player" },
 			-- Innervate/Anregen
-			{ spellID = 29166, caster = "all" },
-			-- Tree of Life/Baum des Lebens
-			{ spellID = 33891, caster = "player" },
+			--{ spellID = 29166, caster = "all" },
+			-- Incarnation
+			{ spellID = 117679, caster = "player" },
 			-- Nature's Grace
-			{ spellID = 16886, caster = "player" },
+			--{ spellID = 16886, caster = "player" },
 			-- Dash
 			{ spellID = 1850, caster = "player" },
 			-- Stampeding Roar
 			{ spellID = 77761, caster = "all" },
 			-- Owlkin Frenzy
-			{ spellID = 48393, caster = "player" },
+			--{ spellID = 48393, caster = "player" },
 			-- Solar Beam
 			{ spellID = 78675, caster = "player" },
 			-- Starfall
 			{ spellID = 48505, caster = "player" },
 			-- Heart of the Wild
-			{ spellID = 108288, caster = "player" },
+			--{ spellID = 108288, caster = "player" },
 			-- Nature's Grasp
-			{ spellID = 16689, caster = "player" },
+			--{ spellID = 16689, caster = "player" },
 			-- Nature's Vigil
 			{ spellID = 124974, caster = "player" },
+			-- Nature's Swiftness
+			{ spellID = 132158, caster = "player" },
 		},
 		{
 			Name = "PLAYER_FERAL_BUFF",
@@ -227,7 +231,7 @@ ns.Filger_Spells = {
 			-- Berserk
 			{ spellID = 50334, caster = "player" },
 			-- Might of Ursoc
-			{ spellID = 106922, caster = "player" },
+			--{ spellID = 106922, caster = "player" },
 			-- Predatory Swiftness
 			{ spellID = 16974, caster = "player" },
 		},
@@ -250,15 +254,15 @@ ns.Filger_Spells = {
 			-- Thrash
 			{ spellID = 77758, caster = "player", spec = 2 },
 			-- Pounce Bleed/Anspringblutung
-			{ spellID = 9007, caster = "player" },
+			--{ spellID = 9007, caster = "player" },
 			-- Demoralizing Roar
 			{ spellID = 99, caster = "player" },
 			-- Mangle/Zerfleischen
-			{ spellID = 33876, caster = "player" },
+			--{ spellID = 33876, caster = "player" },
 			-- Faerie Fire/Feenfeuer
 			{ spellID = 770, caster = "player" },
 			-- Bear Hug
-			{ spellID = 102795, caster = "player" },
+			--{ spellID = 102795, caster = "player" },
 			-- Skull Bash
 			{ spellID = 106839, caster = "player" },
 			-- Mighty Bash
@@ -282,14 +286,122 @@ ns.Filger_Spells = {
 			Anchor = { "LEFT", UIParent, "CENTER", 148, 100 },
 
 			-- Hibernate/Winterschlaf
-			{ spellID = 2637, size = 32, unitId = "focus", caster = "all", filter = "DEBUFF" },
+			--{ spellID = 2637, size = 32, unitId = "focus", caster = "all", filter = "DEBUFF" },
 			-- Entangling Roots/Wucherwurzeln
 			{ spellID = 339, size = 32, unitId = "focus", caster = "all", filter = "DEBUFF" },
 			-- Cyclone/Wirbelsturm
 			{ spellID = 33786, size = 32, unitId = "focus", caster = "all", filter = "DEBUFF" },
 		},
 	},
+	["ROGUE"] = {
+		{
+			Name = "PLAYER_BUFF",
+			Direction = "LEFT",
+			Interval = 1,
+			Opacity = 0.8,
+			Mode = "ICON",
+			Merge = true,
+			Size = 37,
+			Filter = "BUFF",
+			UnitId = "player",
+			Anchor = { "RIGHT", UIParent, "CENTER", -148, 0 },
 
+			-- Slice and Dice
+			{ spellID = 5171, caster = "player", spec = 2 },
+			-- Slice and Dice missing
+			{ spellID = 5171, size = 60, unitId = "player", filter = "IBUFF", spec = 2, incombat = true },
+			-- Conversion
+			{ spellID = 73651, caster = "player" },
+		},
+		{
+			Name = "TARGET_DEBUFF",
+			Direction = "RIGHT",
+			Interval = 1,
+			Mode = "ICON",
+			Size = 38,
+			Filter = "DEBUFF",
+			UnitId = "target",
+			Anchor = { "LEFT", UIParent, "CENTER", 37, -88 },
+
+			-- Rupture
+			{ spellID = 1943, caster = "player" },
+			-- Rupture missing
+			{ spellID = 1943, size = 60, unitId = "target", filter = "IDEBUFF", spec = 1, incombat = true },
+			-- Revealing strike
+			{ spellID = 84617, caster = "player" },
+			-- Crimson tempest
+			{ spellID = 121411, caster = "player" },
+		},
+		{
+			Name = "FOCUS_DEBUFF",
+			Direction = "UP",
+			IconSide = "LEFT",
+			Interval = 1,
+			Mode = "ICON",
+			UnitId = "focus",
+			Anchor = { "LEFT", UIParent, "CENTER", 148, 100 },
+
+			-- Sap
+			{ spellID = 6770, caster = "player" },
+		},
+		{
+			Name = "SHORT_COOLDOWN",
+			Direction = "HORIZONTAL",
+			Interval = 1,
+			Mode = "ICON",
+			Opacity = 0.5,
+			Merge = true,
+			Filter = "CD",
+			Size = 37,
+			Anchor = { "LEFT", UIParent, "CENTER", 0, -40 },
+
+			-- Kick
+			{ spellID = 1766 },
+			-- Kriss
+			{ spellID = 5938 },
+			-- Cloak of shadows
+			{ spellID = 31224 },
+			-- Killing Spree
+			{ spellID = 51690 },
+
+		},
+		{
+			Name = "COOLDOWN",
+			Direction = "UP",
+			Interval = 1,
+			Mode = "ICON",
+			Opacity = 1.0,
+			Merge = true,
+			Filter = "CD",
+			Size = 47,
+			--ForceSize = true,
+			Anchor = { "LEFT", UIParent, "CENTER", 198, -88 },
+
+			-- Vanish
+			{ spellID = 1856 },
+			-- Blind
+			{ spellID = 2094 },
+			-- Sprint
+			{ spellID = 2983 },
+			-- Evade
+			{ spellID = 5277 },
+			-- Adrenaline Rush
+			{ spellID = 13750 },
+			-- Preparation
+			{ spellID = 14185 },
+			-- Promptitude au combat
+			{ spellID = 74001 },
+			-- Bombe fumigene
+			{ spellID = 76577 },
+			-- Vendetta
+			{ spellID = 79140 },
+			-- Voile de dissimulation
+			{ spellID = 114018 },
+			-- Renvoi de l'ombre
+			{ spellID = 152151 }
+		},
+	},
+--[[
 	["MONK"] = {
 		{
 			Name = "PLAYER_BUFF",
@@ -431,7 +543,7 @@ ns.Filger_Spells = {
 			{ spellID = 119381 },
 		},
 	},
-
+--]]
 	["ALL"] = {
 		{
 			Name = "MISTSOFPANDARIA", -- list compiled by Ryn
